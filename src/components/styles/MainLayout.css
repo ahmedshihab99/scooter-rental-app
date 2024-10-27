@@ -1,0 +1,182 @@
+/* MainLayout.css */
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 180px;
+  background-color: #1f1f1f;
+  color: white;
+  padding: 20px;
+  transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 90px;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.company-logo {
+  width: 40px;
+  height: 40px;
+}
+
+.menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+  color: white;
+  margin-right: 10px;
+}
+
+/* Sub-menu link styling */
+.sub-menu-link {
+  display: flex;
+  gap: 5%;
+  align-items: center;
+  padding: 10px 15px;
+  color: white;
+  text-decoration: none; /* Removes underline */
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.sub-menu-link:hover {
+  background-color: #4e44ce;
+}
+
+.sub-menu-icon {
+  font-size: 18px;
+  cursor: pointer;
+  color: white;
+}
+
+/* Removes underline from all sidebar links */
+.sidebar ul li a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+}
+
+.sub-menu {
+  padding-left: 20px;
+  list-style-type: none;
+  margin-top: 10px;
+}
+
+.sub-menu li {
+  margin: 10px 0;
+}
+
+
+/* Main menu item styling */
+.menu-item-with-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+
+  /* background-color: #4e44ce; */
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  /* margin-bottom: 20%; */
+}
+
+
+.menu-item-with-sub:hover{
+  background-color: #4e44ce;
+  
+}
+
+
+
+.menu-item-with-sub-link {
+  display: flex;
+  color: white;
+  text-decoration: none; /* Removes underline */
+}
+
+.arrow-icon {
+  margin-left: auto;
+  transition: transform 0.3s;
+}
+
+.arrow-icon.open {
+  transform: rotate(180deg);
+}
+
+.content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.topbar {
+  background-color: #525252;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ccc;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+.user-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.username {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+main {
+  padding: 20px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.layout.collapsed .menu-icon {
+  margin-right: 0;
+}
+
+.layout.collapsed .sidebar ul li a {
+  justify-content: center;
+  padding: 10px;
+}
+
+.layout.collapsed .arrow-icon {
+  display: none;
+}
+
+main {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px;
+  height: calc(100vh - 60px);
+}

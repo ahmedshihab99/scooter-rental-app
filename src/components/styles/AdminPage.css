@@ -1,0 +1,87 @@
+.admin-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f4f4f9;
+  min-height: 100vh;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.admin-content {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  gap: 30px;
+}
+
+.scooter-list, .scooter-control {
+  flex: 1;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.scooter-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.scooter-list li {
+  background-color: #f9f9f9;
+  margin: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 1.1rem;
+  color: #555;
+}
+
+.scooter-list li span {
+  font-weight: bold;
+}
+
+.scooter-control {
+  background-color: #ffffff;
+}
+
+.scooter-control h2, .scooter-list h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.scooter-control form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.scooter-control input, .scooter-control select {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.scooter-control button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.scooter-control button:hover {
+  background-color: #45a049;
+}

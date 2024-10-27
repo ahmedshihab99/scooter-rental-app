@@ -1,0 +1,93 @@
+/* FeedbackForm.css */
+
+.feedback-body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-color: #dadada; */
+    /* Light grey background */
+    min-height: 100%;
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+    justify-content: center;
+    margin: 0;
+}
+
+.feedback-form {
+    background-color: #4b4b4b;
+    /* Slightly lighter dark background for the form */
+    border-radius: 8px;
+    padding: 20px;
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+    ;
+    /* Center the form on the page */
+    /* box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5); */
+}
+
+.feedback-form-group {
+    margin-bottom: 15px;
+}
+
+.feedback-label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #ffffff;
+    /* Softer text color for labels */
+}
+
+.feedback-input,
+.feedback-textarea {
+    width: 100%;
+    padding: 10px;
+    background-color: #adadad;
+    /* Dark background for input fields */
+    color: #3a3a3a;
+    /* Light text */
+    border: 1px solid #ffffff;
+    /* Subtle border color */
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.feedback-input:focus,
+.feedback-textarea:focus {
+    border-color: #64ceff;
+    /* Accent color for focused input */
+}
+
+.feedback-textarea {
+    min-height: 100px;
+    resize: vertical;
+    /* Allow resizing vertically only */
+}
+
+.feedback-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #1a99f4;
+    /* Accent color for the button */
+    color: #121212;
+    /* Dark text on light button */
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.feedback-button:hover {
+    background-color: #52e0c4;
+    /* Darker shade on hover */
+}
+
+.feedback-message {
+    text-align: center;
+    color: #64ffda;
+    /* Accent color for success message */
+    font-size: 16px;
+}

@@ -1,0 +1,74 @@
+/* Reset some default styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Set body styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa; /* Light background color */
+    color: #343a40; /* Dark text color */
+    line-height: 1.6; /* Increase line height for readability */
+}
+
+/* Basic styles for links */
+a {
+    text-decoration: none; /* Remove underline */
+    color: #007bff; /* Bootstrap primary color */
+}
+
+a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+/* Container for main content */
+.container {
+    max-width: 1200px; /* Max width for larger screens */
+    margin: 0 auto; /* Center align */
+    padding: 20px; /* Padding around content */
+}
+
+/* Basic button styles */
+button {
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Form styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    width: 100%; /* Full width */
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ced4da; /* Light gray border */
+    border-radius: 4px; /* Rounded corners */
+}
+
+/* Styles for headers */
+h1, h2, h3, h4, h5, h6 {
+    color: #343a40; /* Dark color for headers */
+    margin-bottom: 15px;
+}
+
+/* Add some responsive styles */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px; /* Reduce padding on smaller screens */
+    }
+
+    button {
+        width: 100%; /* Full width buttons on small screens */
+    }
+}

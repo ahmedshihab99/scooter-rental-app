@@ -1,0 +1,125 @@
+.admin-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* background-color: #dadada; */
+  /* Light grey background */
+  min-height: 100%;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+  justify-content: center;
+  margin: 0;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #ffffff;
+  /* Dark grey for titles */
+  margin-bottom: 20px;
+}
+
+.admin-content {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  gap: 30px;
+  margin: 0 auto;
+
+  
+}
+
+.scooter-list,
+.scooter-control {
+  flex: 1;
+  background-color: #4b4b4b;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  transition: transform 0.3s ease;
+}
+
+.scooter-list-body h2, .scooter-control-panel-body h2{
+  color: #ffffff;
+}
+
+/* .scooter-list:hover, .scooter-control:hover {
+  transform: translateY(-5px); 
+}*/
+
+.scooter-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.scooter-list li {
+  background-color: #f1f3f5;
+  /* Light grey for list items */
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 1.1rem;
+  color: #495057;
+  /* Medium dark grey for text */
+}
+
+.scooter-list li span {
+  font-weight: bold;
+  color: #212529;
+  /* Stronger text for important information */
+}
+
+.scooter-control h2,
+.scooter-list h2 {
+  font-size: 1.8rem;
+  color: #ffffff;
+  /* Dark grey for section titles */
+  margin-bottom: 15px;
+}
+
+.scooter-control form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.scooter-control input,
+.scooter-control select {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #ced4da;
+  /* Softer grey for input borders */
+  border-radius: 6px;
+  font-size: 1rem;
+  background-color: #f8f9fa;
+  /* Very light grey for input backgrounds */
+  color: #495057;
+  /* Dark grey for input text */
+  transition: border-color 0.3s ease;
+}
+
+.scooter-control input:focus,
+.scooter-control select:focus {
+  border-color: #007bff;
+  /* Blue border on focus */
+  outline: none;
+}
+
+.scooter-control button {
+  background-color: #007bff;
+  /* Bright blue for call-to-action button */
+  color: white;
+  padding: 12px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.scooter-control button:hover {
+  background-color: #0056b3;
+  /* Darker blue on hover */
+  transform: translateY(-3px);
+  /* Slight elevation on hover */
+}
