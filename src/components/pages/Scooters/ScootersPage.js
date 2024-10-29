@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import FilterForm from '../../reusableComponents/FilterForm'; // Ensure this path is correct
 import CustomTable from '../../reusableComponents/CustomTable'; // Ensure this path is correct
-import ScooterEditModal from './compnents/ScooterEditModal'; // Corrected the path
-import AddScooterModal from './compnents/AddScooterModal'; // Corrected the path
+import ScooterEditModal from './components/ScooterEditModal'; // Corrected the path
+import AddScooterModal from './components/AddScooterModal'; // Corrected the path
 
 import './ScootersPage.css';
 
