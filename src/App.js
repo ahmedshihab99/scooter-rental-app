@@ -7,6 +7,7 @@ import FeedbackForm from "./components/pages/Feedback/FeedbackForm";
 import Login from "./components/pages/Auth/Login";
 import SignUp from "./components/pages/Auth/SignUp";
 import MainLayout from "./components/layout/MainLayout";  // Main layout with static sidebar and topbar
+import ScootersPage from "./components/pages/Scooters/ScootersPage";
 import "./styles/global.css";
 
 function App() {
@@ -30,6 +31,8 @@ function App() {
           <Route path="maps" element={<UserMapPage />} />
           <Route path="statistics" element={<StatisticsPage />} />
           <Route path="feedback" element={<FeedbackForm />} />
+          <Route path="/warehouse/scooters" element={<ScootersPage />} />
+          
         </Route>
       </Routes>
     </Router>
