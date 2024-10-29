@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import FilterForm from '../../reusableComponents/FilterForm'; // Assume this file path is correct
-import CustomTable from '../../reusableComponents/CustomTable'; // Assume this file path is correct
+import FilterForm from '../../reusableComponents/FilterForm'; // Ensure this path is correct
+import CustomTable from '../../reusableComponents/CustomTable'; // Ensure this path is correct
+import ScooterEditModal from './compnents/ScooterEditModal'; // Corrected the path
+import AddScooterModal from './compnents/AddScooterModal'; // Corrected the path
+
 import './ScootersPage.css';
 
 const ScooterPage = () => {
-    // Define state variables for filters
+    // State variables for filters
     const [id, setId] = useState('');
     const [createdAt, setCreatedAt] = useState('');
     const [updatedAt, setUpdatedAt] = useState('');
@@ -18,9 +21,50 @@ const ScooterPage = () => {
     const [location, setLocation] = useState('');
     const [filters, setFilters] = useState([]);
 
-    // Function to handle filtering
+    // Modals state
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [selectedScooter, setSelectedScooter] = useState(null);
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+    // Function to open the Add Scooter modal
+    const openAddModal = () => setIsAddModalOpen(true);
+
+    // Function to close the Add Scooter modal
+    const closeAddModal = () => setIsAddModalOpen(false);
+
+    // Function to refresh the table after adding a scooter
+    const handleAddScooter = () => {
+        closeAddModal();
+        refreshTable(); // Ensure data consistency by re-fetching the table
+    };
+
+    // Function to open the Edit Scooter modal
+    const openEditModal = (scooter) => {
+        setSelectedScooter(scooter);
+        setIsEditModalOpen(true);
+    };
+
+    // Function to close the Edit Scooter modal
+    const closeEditModal = () => {
+        setIsEditModalOpen(false);
+        setSelectedScooter(null);
+    };
+
+    // Function to refresh the table after update
+    const handleUpdate = () => {
+        closeEditModal();
+        refreshTable(); // Ensure the table refreshes
+    };
+
+    // Function to re-fetch data (mock example)
+    const refreshTable = () => {
+        // Logic to re-fetch the data goes here. E.g., make a new API call.
+        console.log('Refreshing table data...');
+        applyFilters(); // Reapply filters after refreshing data
+    };
+
+    // Apply filters based on state values
     const applyFilters = () => {
-        // Set up filters based on current state
         setFilters([
             { field: 'id', value: id },
             { field: 'createdAt', value: createdAt },
@@ -36,25 +80,26 @@ const ScooterPage = () => {
         ]);
     };
 
-    // Function to handle action buttons
+    // Handle different action buttons
     const handleAction = (action) => {
         switch (action) {
             case 'updateAddresses':
-                // Handle update addresses
+                console.log('Updating addresses...');
                 break;
             case 'zoneReport':
-                // Handle zone report
+                console.log('Generating zone report...');
                 break;
             case 'exportAll':
-                // Handle export all
+                console.log('Exporting all data...');
                 break;
             case 'exportTable':
-                // Handle export table
+                console.log('Exporting table data...');
                 break;
             case 'addScooter':
-                // Handle add scooter
+                openAddModal();
                 break;
             default:
+                console.warn('Unhandled action:', action);
                 break;
         }
     };
@@ -80,9 +125,9 @@ const ScooterPage = () => {
                         options: [
                             { label: 'AVAILABLE', value: 'AVAILABLE' },
                             { label: 'IN_USE', value: 'IN_USE' },
-                            { label: 'None', value: '' }
+                            { label: 'None', value: '' },
                         ],
-                        onChange: setStatus
+                        onChange: setStatus,
                     },
                     { label: 'Location', placeholder: 'Filter by Location', onChange: setLocation },
                 ]}
@@ -91,7 +136,7 @@ const ScooterPage = () => {
                     { label: 'Zone report', color: 'green', action: 'zoneReport' },
                     { label: 'Export all', color: 'green', action: 'exportAll' },
                     { label: 'Export table', color: 'green', action: 'exportTable' },
-                    { label: 'Add scooter', color: 'green', action: 'addScooter' }
+                    { label: 'Add scooter', color: 'green', action: 'addScooter' },
                 ]}
                 onFilter={applyFilters}
                 onAction={handleAction}
@@ -115,15 +160,23 @@ const ScooterPage = () => {
                         render: (row) => (
                             <>
                                 <button style={{ backgroundColor: 'green' }}>View</button>
-                                <button style={{ backgroundColor: 'blue' }}>Edit</button>
+                                <button style={{ backgroundColor: 'blue' }} onClick={() => openEditModal(row)}>
+                                    Edit
+                                </button>
                                 <button style={{ backgroundColor: 'orange' }}>QR Code</button>
                             </>
-                        )
-                    }
+                        ),
+                    },
                 ]}
                 apiEndpoint="http://10.0.0.22:8090/api/scooters"
                 filters={filters}
             />
+
+            {isEditModalOpen && (
+                <ScooterEditModal scooter={selectedScooter} onClose={closeEditModal} onUpdate={handleUpdate} />
+            )}
+
+            {isAddModalOpen && <AddScooterModal onClose={closeAddModal} onAdd={handleAddScooter} />}
         </div>
     );
 };
