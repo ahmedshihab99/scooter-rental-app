@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FaAngleDown } from 'react-icons/fa';
 
-const MenuItemWithSub = ({ label, icon: Icon, path, subItems, isCollapsed }) => {
+const MenuItemWithSub = ({ label, icon: Icon, path, subItems = [], isCollapsed }) => {
   const [subMenuOpen, setSubMenuOpen] = useState(false);
 
   const handleMenuClick = () => {
-    setSubMenuOpen((prev) => !prev);
+    if (subItems.length > 0) {
+      setSubMenuOpen((prev) => !prev);
+    }
   };
 
   return (
@@ -15,7 +17,7 @@ const MenuItemWithSub = ({ label, icon: Icon, path, subItems, isCollapsed }) => 
         <Link className="menu-item-with-sub-link" to={path}>
           <Icon className="menu-icon" /> {!isCollapsed && label}
         </Link>
-        {!isCollapsed && (
+        {!isCollapsed && subItems.length > 0 && (
           <FaAngleDown
             className={`arrow-icon ${subMenuOpen ? 'open' : ''}`}
             onClick={(e) => {
@@ -26,8 +28,8 @@ const MenuItemWithSub = ({ label, icon: Icon, path, subItems, isCollapsed }) => 
         )}
       </div>
 
-      {/* Subitems toggle based on state */}
-      {subMenuOpen && (
+      {/* Conditionally render subitems only if there are any */}
+      {subMenuOpen && subItems.length > 0 && (
         <ul className="sub-menu">
           {subItems.map((item, index) => (
             <li key={index}>

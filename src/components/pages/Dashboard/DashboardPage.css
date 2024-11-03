@@ -1,0 +1,82 @@
+/* DashboardPage.css */
+.dashboard {
+    padding: 20px;
+}
+
+.dashboard h2 {
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.filter {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.dashboard-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    width: calc(50% - 10px); /* Adjust to fit two cards in a row */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.chart-placeholder {
+    background-color: #f0f0f0;
+    height: 150px; /* Placeholder height */
+    margin-bottom: 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+}
+
+.date-placeholder {
+    margin-top: 10px;
+    font-style: italic;
+    color: #555;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card {
+        width: 100%;
+    }
+
+    .dashboard-row {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard {
+        padding: 10px;
+    }
+
+    .dashboard h2 {
+        font-size: 1.2em;
+    }
+
+    .filter {
+        font-size: 0.9em;
+    }
+
+    .chart-placeholder {
+        height: 100px; /* Reduce height for smaller screens */
+    }
+
+    .date-placeholder {
+        font-size: 0.8em;
+    }
+}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import AdminPage from "./components/pages/Admin/AdminPage";
+import DashboardPage from "./components/pages/Dashboard/DashboardPage";
 import UserMapPage from "./components/pages/UserMap/UserMapPage";
 import StatisticsPage from "./components/pages/Statistics/StatisticsPage";
 import FeedbackForm from "./components/pages/Feedback/FeedbackForm";
@@ -29,7 +29,7 @@ function App() {
           {/* Protected routes inside the MainLayout */}
           <Route path="/" element={<MainLayout user={user} />}>
             <Route index element={<Navigate to="/maps" />} /> {/* Default page */}
-            <Route path="admin" element={<AdminPage />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="maps" element={<UserMapPage />} />
             <Route path="statistics" element={<StatisticsPage />} />
             <Route path="feedback" element={<FeedbackForm />} />

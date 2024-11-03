@@ -1,0 +1,6 @@
+/* Apply full height to html, body, and #root */
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}

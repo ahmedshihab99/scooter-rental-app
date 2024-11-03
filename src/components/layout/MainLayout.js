@@ -34,11 +34,13 @@ const MainLayout = ({ user }) => {
           {/* Admin */}
           <li>
             <MenuItemWithSub
-              label={t["admin"]}
-              icon={FaIcons.FaCog}
-              path="/admin"
+              label={t["dashboard"]}
+              icon={FaIcons.FaTachometerAlt}
+              path="/dashboard"
               subItems={[
-                { label: t["management"], path: '/admin/management', icon: FaIcons.FaCog },
+                { label: t["scooter_activities"], path: '/dashboard/scooter-activities', icon: FaIcons.FaWrench },
+                { label: t["statistics"], path: '/dashboard/statistics', icon: FaIcons.FaChartBar },
+                { label: t["active_scooters"], path: '/dashboard/active-scooters', icon: FaIcons.FaMotorcycle },
               ]}
               isCollapsed={isCollapsed}
             />
@@ -55,6 +57,20 @@ const MainLayout = ({ user }) => {
                 { label: t["countries"], path: '/maps/countries', icon: FaIcons.FaGlobe },
                 { label: t["cities"], path: '/maps/cities', icon: FaIcons.FaCity },
                 { label: t["areas"], path: '/maps/areas', icon: FaIcons.FaDrawPolygon },
+              ]}
+              isCollapsed={isCollapsed}
+            />
+          </li>
+          
+          <li>
+            <MenuItemWithSub
+              label={t["customers"]}
+              icon={FaIcons.FaPersonBooth}
+              path="/customers"
+              subItems={[
+                { label: t["location"], path: '/maps/location', icon: FaIcons.FaMapMarkerAlt },
+                { label: t["heat_map"], path: '/maps/heat-map', icon: FaIcons.FaFire },
+               
               ]}
               isCollapsed={isCollapsed}
             />
@@ -91,19 +107,7 @@ const MainLayout = ({ user }) => {
             />
           </li>
   
-          <li>
-            <MenuItemWithSub
-              label={t["dashboard"]}
-              icon={FaIcons.FaTachometerAlt}
-              path="/dashboard"
-              subItems={[
-                { label: t["scooter_activities"], path: '/dashboard/scooter-activities', icon: FaIcons.FaWrench },
-                { label: t["statistics"], path: '/dashboard/statistics', icon: FaIcons.FaChartBar },
-                { label: t["active_scooters"], path: '/dashboard/active-scooters', icon: FaIcons.FaMotorcycle },
-              ]}
-              isCollapsed={isCollapsed}
-            />
-          </li>
+          
   
           <li>
             <MenuItemWithSub

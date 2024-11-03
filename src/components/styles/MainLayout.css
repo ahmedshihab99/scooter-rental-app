@@ -1,7 +1,7 @@
 /* MainLayout.css */
 .layout {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .sidebar {
@@ -178,5 +178,5 @@ main {
   flex-grow: 1;
   overflow-y: auto;
   padding: 20px;
-  height: calc(100vh - 60px);
+  height: 100vh;
 }
