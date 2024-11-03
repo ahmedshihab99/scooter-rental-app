@@ -79,6 +79,9 @@ const ScooterEditModal = ({ scooter, onClose, onUpdate }) => {
                         <option value="">Select Status</option>
                         <option value="AVAILABLE">AVAILABLE</option>
                         <option value="IN_USE">IN_USE</option>
+                        <option value="REPAIRED">REPAIRED</option>
+                        <option value="MAINTENANCE">MAINTENANCE</option>
+                        <option value="OFFLINE">OFFLINE</option>
                     </select>
                     <input type="text" name="location" value={formData.location} onChange={handleChange} placeholder="Location" />
                 </form>

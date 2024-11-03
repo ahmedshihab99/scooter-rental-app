@@ -12,7 +12,7 @@ const AddScooterModal = ({ onClose, onAdd }) => {
         batteryLevel: '',
         lastMaintenance: '',
         status: 'AVAILABLE',
-        location: null,
+        location: 'Central Park', // Default location
     });
 
     // Handle input changes
@@ -24,10 +24,24 @@ const AddScooterModal = ({ onClose, onAdd }) => {
     // Handle the POST request to add a new scooter
     const handleAddScooter = async () => {
         try {
-            const response = await fetch('http://10.0.0.22:8090/api/scooters', {
+            // Prepare the request body without the `location` property
+            const { location, serialNumber, longitude, latitude, batteryHealth, batteryLevel, lastMaintenance, status } = formData;
+
+            // Construct the request body with proper data types
+            const requestBody = {
+                serialNumber,
+                longitude: parseFloat(longitude),
+                latitude: parseFloat(latitude),
+                batteryHealth: parseInt(batteryHealth, 10),
+                batteryLevel: parseInt(batteryLevel, 10),
+                lastMaintenance,
+                status,
+            };
+
+            const response = await fetch(`http://10.0.0.22:8090/api/scooters?locationName=${location}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(requestBody),
             });
 
             if (response.ok) {
@@ -84,7 +98,7 @@ const AddScooterModal = ({ onClose, onAdd }) => {
                         onChange={handleChange}
                     />
                     <input
-                        type="text"
+                        type="date"
                         name="lastMaintenance"
                         placeholder="Last Maintenance"
                         value={formData.lastMaintenance}
@@ -97,14 +111,18 @@ const AddScooterModal = ({ onClose, onAdd }) => {
                     >
                         <option value="AVAILABLE">AVAILABLE</option>
                         <option value="IN_USE">IN_USE</option>
+                        <option value="REPAIRED">REPAIRED</option>
+                        <option value="MAINTENANCE">MAINTENANCE</option>
+                        <option value="OFFLINE">OFFLINE</option>
                     </select>
-                    <input
-                        type="text"
+                    <select
                         name="location"
-                        placeholder="Location"
                         value={formData.location}
                         onChange={handleChange}
-                    />
+                    >
+                        <option value="Central Park">Central Park</option>
+                        <option value="Cairo">Cairo</option>
+                    </select>
                 </form>
                 <div className="modal-buttons">
                     <button style={{ backgroundColor: 'green' }} onClick={handleAddScooter}>

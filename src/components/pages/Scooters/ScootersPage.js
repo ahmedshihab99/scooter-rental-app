@@ -125,6 +125,9 @@ const ScooterPage = () => {
                         options: [
                             { label: 'AVAILABLE', value: 'AVAILABLE' },
                             { label: 'IN_USE', value: 'IN_USE' },
+                            { label: 'REPAIRED', value: 'REPAIRED' },
+                            { label: 'MAINTENANCE', value: 'MAINTENANCE' },
+                            { label: 'OFFLINE', value: 'OFFLINE' },
                             { label: 'None', value: '' },
                         ],
                         onChange: setStatus,
@@ -154,7 +157,11 @@ const ScooterPage = () => {
                     { label: 'Battery Level', field: 'batteryLevel' },
                     { label: 'Last Maintenance', field: 'lastMaintenance' },
                     { label: 'Status', field: 'status' },
-                    { label: 'Location', field: 'location' },
+                    {
+                        label: 'Location',
+                        field: 'location',
+                        render: (row) => row.location?.name || 'N/A', // Access location name and handle any potential null/undefined cases
+                    },
                     {
                         label: 'Action',
                         render: (row) => (
@@ -171,6 +178,7 @@ const ScooterPage = () => {
                 apiEndpoint="http://10.0.0.22:8090/api/scooters"
                 filters={filters}
             />
+
 
             {isEditModalOpen && (
                 <ScooterEditModal scooter={selectedScooter} onClose={closeEditModal} onUpdate={handleUpdate} />
