@@ -25,6 +25,11 @@ const ScooterPage = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedScooter, setSelectedScooter] = useState(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    
+    const baseURL = process.env.REACT_APP_API_BASE_URL;
+    console.log("Base URL:", baseURL);
+
+    
 
     // Function to open the Add Scooter modal
     const openAddModal = () => setIsAddModalOpen(true);
@@ -175,7 +180,8 @@ const ScooterPage = () => {
                         ),
                     },
                 ]}
-                apiEndpoint="http://10.0.0.22:8090/api/scooters"
+                
+                apiEndpoint={`${baseURL}/api/scooters`} // Dynamically use baseURL
                 filters={filters}
             />
 

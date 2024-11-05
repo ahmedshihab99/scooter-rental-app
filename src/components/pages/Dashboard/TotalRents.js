@@ -3,14 +3,18 @@ import React, { useState } from 'react';
 import CustomTable from '../../reusableComponents/CustomTable';
 import FilterForm from '../../reusableComponents/FilterForm';
 
+
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+
+
 const TotalRents = () => {
     const [dateFilter, setDateFilter] = useState('');
     const columns = [
-        { label: 'Rent ID', field: 'rent_id' },
-        { label: 'Scooter ID', field: 'scooter_id' },
-        { label: 'User ID', field: 'user_id' },
-        { label: 'Start Date', field: 'start_date' },
-        { label: 'End Date', field: 'end_date' },
+        { label: 'Rent ID', field: 'rentId' },
+        { label: 'Scooter ID', field: 'scooterId' },
+        { label: 'User ID', field: 'userId' },
+        { label: 'Start Date', field: 'startDate' },
+        { label: 'End Date', field: 'endDate' },
     ];
 
     const handleFilterChange = (value) => {
@@ -38,7 +42,7 @@ const TotalRents = () => {
         <div className="card">
             <h3>Total Rents</h3>
             <FilterForm fields={fields} onFilter={() => { }} />
-            <CustomTable columns={columns} apiEndpoint="/api/rents" filters={filters} />
+            <CustomTable columns={columns} apiEndpoint={`${baseURL}/rent_list`} filters={filters} />
         </div>
     );
 };

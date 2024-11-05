@@ -26,14 +26,21 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 15px;
-    width: calc(50% - 10px); /* Adjust to fit two cards in a row */
+    width: calc(50% - 10px);
+    /* Adjust to fit two cards in a row */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    height: 30%;
+}
+
+.custom-table {
+    overflow: scroll;
 }
 
 .chart-placeholder {
     background-color: #f0f0f0;
-    height: 150px; /* Placeholder height */
+    height: 150px;
+    /* Placeholder height */
     margin-bottom: 10px;
     border-radius: 4px;
     display: flex;
@@ -73,7 +80,8 @@
     }
 
     .chart-placeholder {
-        height: 100px; /* Reduce height for smaller screens */
+        height: 100px;
+        /* Reduce height for smaller screens */
     }
 
     .date-placeholder {
