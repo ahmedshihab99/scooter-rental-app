@@ -181,7 +181,7 @@ const ScooterPage = () => {
                     },
                 ]}
                 
-                apiEndpoint={`${baseURL}/api/scooters`} // Dynamically use baseURL
+                apiEndpoint={`${baseURL}/scooters`} // Dynamically use baseURL
                 filters={filters}
             />
 

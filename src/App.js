@@ -8,6 +8,7 @@ import Login from "./components/pages/Auth/Login";
 import SignUp from "./components/pages/Auth/SignUp";
 import MainLayout from "./components/layout/MainLayout";
 import ScootersPage from "./components/pages/Scooters/ScootersPage";
+import CustomersRegistryPage from ".//components/pages/Customers/CustomersRegistryPage"
 import "./styles/global.css";
 import { LanguageProvider } from "./components/reusableComponents/locales/LanguageContext"; // Import LanguageProvider
 
@@ -34,6 +35,7 @@ function App() {
             <Route path="statistics" element={<StatisticsPage />} />
             <Route path="feedback" element={<FeedbackForm />} />
             <Route path="/warehouse/scooters" element={<ScootersPage />} />
+            <Route path="/customers/customers_registery_page" element={<CustomersRegistryPage />} />
           </Route>
         </Routes>
       </Router>

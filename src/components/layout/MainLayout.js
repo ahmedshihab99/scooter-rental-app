@@ -68,7 +68,7 @@ const MainLayout = ({ user }) => {
               icon={FaIcons.FaPersonBooth}
               path="/customers"
               subItems={[
-                { label: t["location"], path: '/maps/location', icon: FaIcons.FaMapMarkerAlt },
+                { label: "Registery Page", path: 'customers/customers_registery_page', icon: FaIcons.FaMapMarkerAlt },
                 { label: t["heat_map"], path: '/maps/heat-map', icon: FaIcons.FaFire },
                
               ]}
