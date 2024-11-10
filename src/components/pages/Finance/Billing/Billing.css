@@ -1,0 +1,9 @@
+/* BillingPage.css */
+.billing-page {
+    padding: 20px;
+}
+
+.billing-page h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+}

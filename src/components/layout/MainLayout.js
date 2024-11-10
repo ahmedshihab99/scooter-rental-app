@@ -1,27 +1,52 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 import '../styles/MainLayout.css';
 import MenuItemWithSub from '../reusableComponents/MenuItemWithSub';
 import * as FaIcons from 'react-icons/fa';
 import { LanguageContext } from '../reusableComponents/locales/LanguageContext';
 
-
-
 const MainLayout = ({ user }) => {
-  const { t, switchLanguage  } = useContext(LanguageContext); // Access translate function from LanguageContext
-
+  const { t, switchLanguage } = useContext(LanguageContext); // Access translate function from LanguageContext
   const [isCollapsed, setIsCollapsed] = useState(false); // State for sidebar collapse
   const [subMenuOpen, setSubMenuOpen] = useState({}); // State for sub-menu toggle
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for user dropdown
+
   const navigate = useNavigate();
+  const dropdownRef = useRef(null); // Ref for the dropdown element
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed); // Toggle the sidebar state
+  };
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen); // Toggle user dropdown menu
   };
 
   const handleMenuClick = (menu, path) => {
     setSubMenuOpen((prev) => ({ ...prev, [menu]: !prev[menu] })); // Toggle sub-menu
     navigate(path); // Navigate to the menu path
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if the click was outside of the dropdown
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false); // Close the dropdown
+      }
+    };
+
+    // Attach the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    
+    // Cleanup event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  if (!user) {
+    return <div>Loading...</div>; // Show loading if user data isn't available yet
+  }
 
   return (
     <div className={`layout ${isCollapsed ? 'collapsed' : ''}`}>
@@ -45,7 +70,7 @@ const MainLayout = ({ user }) => {
               isCollapsed={isCollapsed}
             />
           </li>
-  
+          {/* Other menu items */}
           <li>
             <MenuItemWithSub
               label={t["maps"]}
@@ -64,8 +89,20 @@ const MainLayout = ({ user }) => {
           
           <li>
             <MenuItemWithSub
+              label={t["geofence"]}
+              icon={FaIcons.FaMap}
+              path="/geofence"
+              subItems={[
+                
+              ]}
+              isCollapsed={isCollapsed}
+            />
+          </li>
+          
+          <li>
+            <MenuItemWithSub
               label={t["customers"]}
-              icon={FaIcons.FaPersonBooth}
+              icon={FaIcons.FaUserFriends}
               path="/customers"
               subItems={[
                 { label: "Registery Page", path: 'customers/customers_registery_page', icon: FaIcons.FaMapMarkerAlt },
@@ -75,8 +112,24 @@ const MainLayout = ({ user }) => {
               isCollapsed={isCollapsed}
             />
           </li>
-  
+          
+          
           <li>
+            <MenuItemWithSub
+              label={t["finance"]}
+              icon={FaIcons.FaHandHoldingUsd}
+              path="/finance"
+              subItems={[
+                { label: t["billing"], path: '/finance/billing', icon: FaIcons.FaMoneyBill },
+                { label: t["transactions"], path: '/finance/transactions', icon: FaIcons.FaMoneyBill },
+                { label: t["transfer_list"], path: '/finance/transfer-list', icon: FaIcons.FaHandHoldingUsd },
+                { label: t["refund_list"], path: '/finance/refund-list', icon: FaIcons.FaMoneyBill },
+              ]}
+              isCollapsed={isCollapsed}
+            />
+          </li>
+  
+          {/* <li>
             <MenuItemWithSub
               label={t["marketing"]}
               icon={FaIcons.FaBullhorn}
@@ -91,21 +144,9 @@ const MainLayout = ({ user }) => {
               ]}
               isCollapsed={isCollapsed}
             />
-          </li>
+          </li> */}
   
-          <li>
-            <MenuItemWithSub
-              label={t["finance"]}
-              icon={FaIcons.FaHandHoldingUsd}
-              path="/finance"
-              subItems={[
-                { label: t["transactions"], path: '/finance/transactions', icon: FaIcons.FaMoneyBill },
-                { label: t["transfer_list"], path: '/finance/transfer-list', icon: FaIcons.FaHandHoldingUsd },
-                { label: t["refund_list"], path: '/finance/refund-list', icon: FaIcons.FaMoneyBill },
-              ]}
-              isCollapsed={isCollapsed}
-            />
-          </li>
+          
   
           
   
@@ -150,12 +191,11 @@ const MainLayout = ({ user }) => {
           </li>
         </ul>
       </nav>
-  
+
       {/* Right Content Area */}
       <div className="content">
         {/* Top Bar */}
         <header className="topbar">
-          
           <FaIcons.FaBars className="menu-icon" onClick={toggleSidebar} color='white' /> {/* Menu icon in the top bar */}
           <select onChange={(e) => switchLanguage(e.target.value)} defaultValue="en">
             <option value="en">{t["english"]}</option>
@@ -163,13 +203,20 @@ const MainLayout = ({ user }) => {
             <option value="ar">العربية</option>
             {/* Add more options as needed */}
           </select>
-          <div className="user-info">
+          <div className="user-info" onClick={toggleDropdown}>
             <img src={user.icon} alt="User Icon" className="user-icon" />
-            <span className="username">{user.name}</span>
+            <span className="username">{user.firstName}</span>
           </div>
-          
+
+          {/* User dropdown menu */}
+          {isDropdownOpen && (
+            <div className="user-dropdown" ref={dropdownRef}>
+              <Link to="/profile" className="dropdown-item">{t["my_profile"] || "My Profile"}</Link>
+              <Link to="/settings" className="dropdown-item">{t["settings"] || "Settings"}</Link>
+            </div>
+          )}
         </header>
-  
+
         {/* Dynamic page content based on route */}
         <main>
           <Outlet /> {/* Routed pages render here */}
@@ -177,7 +224,6 @@ const MainLayout = ({ user }) => {
       </div>
     </div>
   );
-  
 };
 
 export default MainLayout;

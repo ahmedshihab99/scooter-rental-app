@@ -1,7 +1,8 @@
+// CustomTable.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const CustomTable = ({ columns, apiEndpoint, filters }) => {
+const CustomTable = ({ columns, apiEndpoint, filters, sumFields = null }) => {
     const [data, setData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
 
@@ -38,15 +39,30 @@ const CustomTable = ({ columns, apiEndpoint, filters }) => {
             .catch(error => console.error('Error updating table:', error));
     };
 
+    // Helper function to get nested field values using dot notation
+    const getFieldValue = (row, fieldPath) => {
+        return fieldPath.split('.').reduce((acc, key) => (acc ? acc[key] : 0), row);
+    };
+
+    const calculateSum = (row) => {
+        if (sumFields) {
+            return sumFields.fields.reduce((acc, field) => {
+                return acc + (parseFloat(getFieldValue(row, field)) || 0);
+            }, 0).toFixed(2);
+        }
+        return null;
+    };
+
     return (
         <div className="custom-table">
-            <button onClick={updateTable}>Update Table</button>
+            {/* <button onClick={updateTable}>Update Table</button> */}
             <table>
                 <thead>
                     <tr>
                         {columns.map((column, index) => (
                             <th key={index}>{column.label}</th>
                         ))}
+                        {sumFields && <th>{sumFields.label}</th>}
                     </tr>
                 </thead>
                 <tbody>
@@ -57,6 +73,9 @@ const CustomTable = ({ columns, apiEndpoint, filters }) => {
                                     {column.render ? column.render(row) : row[column.field]}
                                 </td>
                             ))}
+                            {sumFields && (
+                                <td>{calculateSum(row)}</td>
+                            )}
                         </tr>
                     ))}
                 </tbody>

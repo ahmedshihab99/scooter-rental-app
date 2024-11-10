@@ -1,10 +1,15 @@
 import axios from "axios";
 
-const API_URL = "/api/scooters"; // Assuming Spring Boot backend is hosted here
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+
+const API_URL = `${baseURL}/scooters`;
+
+
 
 const getAllScooters = async () => {
   try {
     const response = await axios.get(API_URL);
+    console.log(response.data)
     return response.data;
   } catch (error) {
     console.error("Error fetching scooters:", error);

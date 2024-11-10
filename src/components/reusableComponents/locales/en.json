@@ -3,7 +3,6 @@
     "maps": "Maps",
     "marketing": "Marketing",
     "finance": "Finance",
-    "dashboard": "Dashboard",
     "human_resources": "HR",
     "rent": "Rent",
     "warehouse": "Warehouse",
@@ -16,6 +15,8 @@
     "cities": "Cities",
     "areas": "Areas",
     
+    "geofence": "Geofence",
+    
     "customers": "Customers",
     "rent_list": "Rent List",
     "subscribe": "Subscribe",
@@ -23,6 +24,7 @@
     "vouchers": "Vouchers",
     "notifications": "Notifications",
     
+    "billing": "Billing",
     "transactions": "Transactions",
     "transfer_list": "Transfer List",
     "refund_list": "Refund List",

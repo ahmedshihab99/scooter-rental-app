@@ -44,7 +44,12 @@ const CustomersRegistryPage = () => {
         {
             label: 'Actions',
             render: (row) => (
-                <div>
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    gap: '10px'
+                }}>
                     <HandleApproval customerId={row.id} />
                     <HandleReject customerId={row.id} />
                 </div>
