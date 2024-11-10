@@ -1,3 +1,21 @@
+.geofencing-page-main {
+  padding: 0;
+}
+
+.geofence-container{
+  display: flex;
+}
+
+.geofence-control{
+  padding: 15px;
+  background-color: #1f1f1f;
+  width: 25%;
+}
+
+.geofence-list-item{
+  background-color: white;
+}
+
 .map-controls {
     position: absolute;
     top: 10px;
@@ -7,14 +25,14 @@
     gap: 10px;
   }
   
-  .map-controls button {
+  /* .map-controls button {
     padding: 8px 12px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-  }
+  } */
   
   .map-controls button:disabled {
     background-color: #ccc;

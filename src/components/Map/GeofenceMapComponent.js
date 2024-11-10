@@ -4,11 +4,14 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polygon, useMap, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import scooterIconImg from "../../assets/scooter-icon.png";
+import pointMarkerImg from "../../assets/pointMarker.png";
+
+
+
 
 // Define the scooter icon using the imported image
-const scooterIcon = new L.Icon({
-  iconUrl: scooterIconImg,
+const pointMarkerIcon = new L.Icon({
+  iconUrl: pointMarkerImg,
   iconSize: [30, 30],
   iconAnchor: [15, 30],
   popupAnchor: [0, -30],
@@ -17,7 +20,7 @@ const scooterIcon = new L.Icon({
 // Component to handle map click events for adding points
 const MapClickHandler = ({ onPointAdded, isAddingPoint }) => {
   useMapEvents({
-    dblclick(e) {
+    click(e) {
       if (isAddingPoint) {
         const { lat, lng } = e.latlng;
         onPointAdded([lat, lng]);
@@ -61,9 +64,13 @@ const MapRefocusButton = ({ userPosition }) => {
 };
 
 // Main Map Component
-const GeofenceMapComponent = ({ geofencePoints = [], onPointAdded, isAddingPoint, editable }) => {
+const GeofenceMapComponent = ({ geofencePoints = [], onPointAdded, onEditPoint, onDeletePoint, isAddingPoint, editable }) => {
+
+
   const [userPosition, setUserPosition] = useState(null);
   const [geofences, setGeofences] = useState([]);
+  
+  
 
   // Fetch geofences from API
   useEffect(() => {
@@ -104,14 +111,25 @@ const GeofenceMapComponent = ({ geofencePoints = [], onPointAdded, isAddingPoint
       />
       <MapClickHandler onPointAdded={onPointAdded} isAddingPoint={isAddingPoint} />
 
-      {/* Add markers for each geofence point */}
       {(geofencePoints || []).map((point, index) => (
-        <Marker key={index} position={point} icon={scooterIcon}>
-          <Popup>
-            Point {index + 1}: (Lat: {point[0].toFixed(6)}, Lng: {point[1].toFixed(6)})
-          </Popup>
-        </Marker>
-      ))}
+    <Marker
+        key={index}
+        position={point}
+        icon={pointMarkerIcon}
+        eventHandlers={{
+            click: () => onEditPoint(index),
+        }}
+    >
+        <Popup>
+            <div>
+                <div>Point {index + 1}: (Lat: {point[0].toFixed(6)}, Lng: {point[1].toFixed(6)})</div>
+                <button onClick={() => onDeletePoint(index)}>Delete</button>
+            </div>
+        </Popup>
+    </Marker>
+))}
+
+
 
       {/* Draw the geofence polygon if there are enough points */}
       {geofencePoints.length > 2 && (
