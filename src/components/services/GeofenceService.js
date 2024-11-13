@@ -2,11 +2,14 @@
 
 import axios from 'axios';
 
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+const API_URL = `${baseURL}/geofence`;
+
 const GeofenceService = {
   // Fetch geofence data from the backend
   getAllGeofences: async () => {
     try {
-      const response = await axios.get('http://10.0.0.31:7000/api/geofences');
+      const response = await axios.get('');
       return response.data;
     } catch (error) {
       console.error('Error fetching geofence data:', error);

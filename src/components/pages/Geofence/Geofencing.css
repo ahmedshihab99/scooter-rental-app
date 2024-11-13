@@ -37,4 +37,9 @@
   .map-controls button:disabled {
     background-color: #ccc;
   }
+ 
+  .leaflet-control-custom {
+    z-index: 1000; /* Ensure it displays on top of map elements */
+  }
+  
   

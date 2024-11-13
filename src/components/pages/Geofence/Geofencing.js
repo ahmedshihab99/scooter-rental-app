@@ -13,6 +13,8 @@ const GeofencingPage = () => {
     const [selectedGeofence, setSelectedGeofence] = useState(null);
     const [isAddingGeofence, setIsAddingGeofence] = useState(false);
     const [newGeofenceName, setNewGeofenceName] = useState("");
+    const [newGeofenceType, setNewGeofenceType] = useState("");
+    
     const [isListeningForPoint, setIsListeningForPoint] = useState(false);
 
     const [pointToEditIndex, setPointToEditIndex] = useState(null);
@@ -27,14 +29,11 @@ const GeofencingPage = () => {
 
 
 
-
-
-
-    // Fetch geofence areas from the backend
+    // Fetch Geofence
     const fetchGeofences = async () => {
         try {
             const response = await GeofenceService.getAllGeofences();
-            setGeofences(response.geofences || []);
+            setGeofences(response || []);
         } catch (error) {
             console.error("Error fetching geofence data:", error);
         }
@@ -43,13 +42,56 @@ const GeofencingPage = () => {
     useEffect(() => {
         fetchGeofences();
     }, []);
-
+    
+    
+    // ADD NEW Geofence
     const handleAddGeofence = () => {
         setIsAddingGeofence(true);
-        setSelectedGeofence({ name: newGeofenceName, coordinates: [] });
+        setSelectedGeofence({ name: newGeofenceName, geofenceType: "", coordinates: [] });
         setIsEditingOrAdding(true); // Lock existing geofences
     };
-
+    
+    // UPDATE Geofence
+    const handleUpdateGeofence = async () => {
+        try {
+            console.log(`the following is the SG ${selectedGeofence.geofenceType}`);
+            await GeofenceService.updateGeofence(selectedGeofence.id, selectedGeofence); // PUT request
+            setSelectedGeofence(null); // reset after updating
+            await fetchGeofences(); // refresh list
+        } catch (error) {
+            console.error("Error updating geofence:", error);
+        }
+    };
+    
+    const handleEditGeofence = (geofence) => {
+        setSelectedGeofence(geofence);
+        setOriginalGeofenceCoordinates([...geofence.coordinates]); // track original points
+        setIsEditingOrAdding(true); // Lock existing geofences
+    };
+    
+    // For both ADD and UPDATE
+    const handleSaveGeofence = async () => {
+        try {
+            if (isAddingGeofence) {
+                await GeofenceService.addGeofence(selectedGeofence); // ADD
+                setIsAddingGeofence(false);
+            } else {
+                await GeofenceService.updateGeofence(selectedGeofence.id, selectedGeofence); // UPDATE
+            }
+            setSelectedGeofence(null);
+            setNewGeofenceName("");
+            setNewGeofenceType("");
+            setIsEditingOrAdding(false); // Unlock existing geofences
+            await fetchGeofences();
+        } catch (error) {
+            console.error("Error saving geofence:", error);
+        }
+    };
+    
+    
+    
+    
+    
     const handleStartListeningForPoint = () => {
         setIsListeningForPoint(true);
         setIsAddingAPoint(true); // New state to indicate a point is being added
@@ -107,41 +149,7 @@ const GeofencingPage = () => {
         setPointToDeleteIndex(index);
     };
 
-
-    const handleUpdateGeofence = async () => {
-        try {
-            await GeofenceService.updateGeofence(selectedGeofence.id, selectedGeofence); // PUT request
-            setSelectedGeofence(null); // reset after updating
-            await fetchGeofences(); // refresh list
-        } catch (error) {
-            console.error("Error updating geofence:", error);
-        }
-    };
-
-
-
-    const handleSaveGeofence = async () => {
-        try {
-            if (isAddingGeofence) {
-                await GeofenceService.addGeofence(selectedGeofence);
-                setIsAddingGeofence(false);
-            } else {
-                await GeofenceService.updateGeofence(selectedGeofence.id, selectedGeofence);
-            }
-            setSelectedGeofence(null);
-            setNewGeofenceName("");
-            setIsEditingOrAdding(false); // Unlock existing geofences
-            await fetchGeofences();
-        } catch (error) {
-            console.error("Error saving geofence:", error);
-        }
-    };
-
-    const handleEditGeofence = (geofence) => {
-        setSelectedGeofence(geofence);
-        setOriginalGeofenceCoordinates([...geofence.coordinates]); // track original points
-        setIsEditingOrAdding(true); // Lock existing geofences
-    };
+    
 
     const handleClearCoordinates = () => {
         setSelectedGeofence((prevGeofence) => ({
@@ -164,6 +172,7 @@ const GeofencingPage = () => {
         setSelectedGeofence(null);
         setIsAddingGeofence(false);
         setNewGeofenceName("");
+        setNewGeofenceType("");
         setIsListeningForPoint(false);
         setIsEditingOrAdding(false); // Unlock existing geofences
     };
@@ -290,6 +299,14 @@ const GeofencingPage = () => {
                                 value={newGeofenceName}
                                 onChange={(e) => setNewGeofenceName(e.target.value)}
                             />
+                            
+                            <CustomTextField style={{marginTop:'10px'}}
+                                label="Type"
+                                variant="outlined"
+                                value={newGeofenceType}
+                                onChange={(e) => setNewGeofenceType(e.target.value)}
+                            />
+                            
                             <Button
                                 variant="contained"
                                 color="primary"

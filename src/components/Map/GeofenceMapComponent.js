@@ -1,10 +1,16 @@
 // File: GeoFenceMapComponent.js
 
 import React, { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup, Polygon, useMap, useMapEvents } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Polygon, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import pointMarkerImg from "../../assets/pointMarker.png";
+import MapRefocusButton from "./MapRefocusButton";  // Import the refocus button
+
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+const API_URL = `${baseURL}/geofences`;
+
+console.log(`uri: ${API_URL}`);
 
 // Define the scooter icon using the imported image
 const pointMarkerIcon = new L.Icon({
@@ -27,39 +33,6 @@ const MapClickHandler = ({ onPointAdded, isAddingPoint, isEditingOrAdding }) => 
   return null;
 };
 
-// Refocus button component
-const MapRefocusButton = ({ userPosition }) => {
-  const map = useMap();
-
-  useEffect(() => {
-    if (!userPosition) return;
-
-    const refocusControl = L.control({ position: "bottomleft" });
-
-    refocusControl.onAdd = () => {
-      const div = L.DomUtil.create("div", "leaflet-bar leaflet-control leaflet-control-custom");
-      div.style.backgroundColor = "white";
-      div.style.padding = "5px";
-      div.style.cursor = "pointer";
-      div.innerHTML = "📍 Refocus";
-
-      div.onclick = () => {
-        map.setView([userPosition.lat, userPosition.lng], 13);
-      };
-
-      return div;
-    };
-
-    refocusControl.addTo(map);
-
-    return () => {
-      map.removeControl(refocusControl);
-    };
-  }, [map, userPosition]);
-
-  return null;
-};
-
 // Main Map Component
 const GeofenceMapComponent = ({ geofencePoints = [], onPointAdded, onEditPoint, onDeletePoint, isAddingPoint, editable, isEditingOrAdding }) => {
   const [userPosition, setUserPosition] = useState(null);
@@ -69,9 +42,9 @@ const GeofenceMapComponent = ({ geofencePoints = [], onPointAdded, onEditPoint, 
   useEffect(() => {
     const fetchGeofences = async () => {
       try {
-        const response = await fetch("http://10.0.0.31:7000/api/geofences");
+        const response = await fetch(API_URL);
         const data = await response.json();
-        setGeofences(data.geofences || []);
+        setGeofences(data || []);
       } catch (error) {
         console.error("Error fetching geofences:", error);
       }
