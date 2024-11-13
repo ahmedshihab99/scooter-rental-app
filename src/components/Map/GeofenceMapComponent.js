@@ -6,9 +6,6 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import pointMarkerImg from "../../assets/pointMarker.png";
 
-
-
-
 // Define the scooter icon using the imported image
 const pointMarkerIcon = new L.Icon({
   iconUrl: pointMarkerImg,
@@ -18,10 +15,10 @@ const pointMarkerIcon = new L.Icon({
 });
 
 // Component to handle map click events for adding points
-const MapClickHandler = ({ onPointAdded, isAddingPoint }) => {
+const MapClickHandler = ({ onPointAdded, isAddingPoint, isEditingOrAdding }) => {
   useMapEvents({
     click(e) {
-      if (isAddingPoint) {
+      if (isAddingPoint && isEditingOrAdding) {
         const { lat, lng } = e.latlng;
         onPointAdded([lat, lng]);
       }
@@ -64,19 +61,15 @@ const MapRefocusButton = ({ userPosition }) => {
 };
 
 // Main Map Component
-const GeofenceMapComponent = ({ geofencePoints = [], onPointAdded, onEditPoint, onDeletePoint, isAddingPoint, editable }) => {
-
-
+const GeofenceMapComponent = ({ geofencePoints = [], onPointAdded, onEditPoint, onDeletePoint, isAddingPoint, editable, isEditingOrAdding }) => {
   const [userPosition, setUserPosition] = useState(null);
   const [geofences, setGeofences] = useState([]);
-  
-  
 
   // Fetch geofences from API
   useEffect(() => {
     const fetchGeofences = async () => {
       try {
-        const response = await fetch("http://localhost:8900/geofence");
+        const response = await fetch("http://10.0.0.31:7000/api/geofences");
         const data = await response.json();
         setGeofences(data.geofences || []);
       } catch (error) {
@@ -104,44 +97,40 @@ const GeofenceMapComponent = ({ geofencePoints = [], onPointAdded, onEditPoint, 
   }, []);
 
   return (
-    <MapContainer center={[30.0444, 31.2357]} zoom={13} style={{ height: "700px", width: "100%" }}>
+    <MapContainer center={[30.0444, 31.2357]} zoom={13} style={{ height: "100vh", width: "100%" }}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&copy; OpenStreetMap contributors"
       />
-      <MapClickHandler onPointAdded={onPointAdded} isAddingPoint={isAddingPoint} />
+      <MapClickHandler onPointAdded={onPointAdded} isAddingPoint={isAddingPoint} isEditingOrAdding={isEditingOrAdding} />
 
       {(geofencePoints || []).map((point, index) => (
-    <Marker
-        key={index}
-        position={point}
-        icon={pointMarkerIcon}
-        eventHandlers={{
-            click: () => onEditPoint(index),
-        }}
-    >
-        <Popup>
+        <Marker
+          key={index}
+          position={point}
+          icon={pointMarkerIcon}
+          eventHandlers={{
+            click: () => isEditingOrAdding && onEditPoint(index),
+          }}
+        >
+          <Popup>
             <div>
-                <div>Point {index + 1}: (Lat: {point[0].toFixed(6)}, Lng: {point[1].toFixed(6)})</div>
-                <button onClick={() => onDeletePoint(index)}>Delete</button>
+              <div>Point {index + 1}: (Lat: {point[0].toFixed(6)}, Lng: {point[1].toFixed(6)})</div>
+              <button onClick={() => onDeletePoint(index)}>Delete</button>
             </div>
-        </Popup>
-    </Marker>
-))}
-
-
+          </Popup>
+        </Marker>
+      ))}
 
       {/* Draw the geofence polygon if there are enough points */}
-      {geofencePoints.length > 2 && (
-        <Polygon positions={geofencePoints} color="blue" />
-      )}
+      {geofencePoints.length > 2 && <Polygon positions={geofencePoints} color="blue" />}
 
       {/* Display geofences from the backend */}
       {geofences.map((geofence) => (
         <Polygon
           key={geofence.id}
           positions={geofence.coordinates}
-          color="blue"
+          color="green"
           pathOptions={{ fillOpacity: 0.2 }}
         >
           <Popup>{geofence.name}</Popup>

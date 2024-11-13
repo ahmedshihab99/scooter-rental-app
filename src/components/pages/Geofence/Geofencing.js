@@ -21,6 +21,9 @@ const GeofencingPage = () => {
     const [originalGeofenceCoordinates, setOriginalGeofenceCoordinates] = useState([]);
 
     const [isAddingAPoint, setIsAddingAPoint] = useState(false);
+    
+    const [isEditingOrAdding, setIsEditingOrAdding] = useState(false);
+
 
 
 
@@ -44,11 +47,14 @@ const GeofencingPage = () => {
     const handleAddGeofence = () => {
         setIsAddingGeofence(true);
         setSelectedGeofence({ name: newGeofenceName, coordinates: [] });
+        setIsEditingOrAdding(true); // Lock existing geofences
     };
 
     const handleStartListeningForPoint = () => {
         setIsListeningForPoint(true);
         setIsAddingAPoint(true); // New state to indicate a point is being added
+        setEditingPointIndex(null); // Reset editing index to prevent conflict with add mode
+        setPointToDeleteIndex(null); // Reset delete index as well
 
     };
 
@@ -124,6 +130,7 @@ const GeofencingPage = () => {
             }
             setSelectedGeofence(null);
             setNewGeofenceName("");
+            setIsEditingOrAdding(false); // Unlock existing geofences
             await fetchGeofences();
         } catch (error) {
             console.error("Error saving geofence:", error);
@@ -133,6 +140,7 @@ const GeofencingPage = () => {
     const handleEditGeofence = (geofence) => {
         setSelectedGeofence(geofence);
         setOriginalGeofenceCoordinates([...geofence.coordinates]); // track original points
+        setIsEditingOrAdding(true); // Lock existing geofences
     };
 
     const handleClearCoordinates = () => {
@@ -157,6 +165,7 @@ const GeofencingPage = () => {
         setIsAddingGeofence(false);
         setNewGeofenceName("");
         setIsListeningForPoint(false);
+        setIsEditingOrAdding(false); // Unlock existing geofences
     };
 
     return (
@@ -169,6 +178,7 @@ const GeofencingPage = () => {
                     onDeletePoint={handleDeletePoint}
                     isAddingPoint={isListeningForPoint}
                     editable={!!selectedGeofence}
+                    isEditingOrAdding={isEditingOrAdding} // Pass the new prop
                 />
 
 

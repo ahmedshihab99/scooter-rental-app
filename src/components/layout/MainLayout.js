@@ -218,9 +218,9 @@ const MainLayout = ({ user }) => {
         </header>
 
         {/* Dynamic page content based on route */}
-        <main>
+        <div className='outlet-body'>
           <Outlet /> {/* Routed pages render here */}
-        </main>
+        </div>
       </div>
     </div>
   );
