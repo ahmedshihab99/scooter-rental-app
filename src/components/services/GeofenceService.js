@@ -31,13 +31,26 @@ const GeofenceService = {
   // Update existing geofence data on the backend
   updateGeofence: async (id, geofence) => {
     try {
+      console.log(`geofence's geoType is ${geofence.geofenceType}`);
       const response = await axios.put(`${API_URL}/${id}`, geofence);
       return response.data;
     } catch (error) {
       console.error('Error updating geofence:', error);
       throw error;
     }
+  },
+  
+  // Delete existing geofence data on the backend
+  deleteGeofence: async (id) => {
+    try {
+      const response = await axios.delete(`${API_URL}/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error deleting geofence:', error);
+      throw error;
+    }
   }
+  
 };
 
 export default GeofenceService;

@@ -34,24 +34,35 @@ const MapClickHandler = ({ onPointAdded, isAddingPoint, isEditingOrAdding }) => 
 };
 
 // Main Map Component
-const GeofenceMapComponent = ({ geofencePoints = [], onPointAdded, onEditPoint, onDeletePoint, isAddingPoint, editable, isEditingOrAdding }) => {
+const GeofenceMapComponent = ({ geofencePoints = [], onPointAdded, onEditPoint, onDeletePoint, isAddingPoint, editable, isEditingOrAdding, isGeofenceAddedOrUpdated, setIsGeofenceAddedOrUpdated }) => {
   const [userPosition, setUserPosition] = useState(null);
   const [geofences, setGeofences] = useState([]);
 
   // Fetch geofences from API
+  const fetchGeofences = async () => {
+    try {
+      const response = await fetch(API_URL);
+      const data = await response.json();
+      setGeofences(data || []);
+      setIsGeofenceAddedOrUpdated(false);
+    } catch (error) {
+      console.error("Error fetching geofences:", error);
+    }
+  };
+  
   useEffect(() => {
-    const fetchGeofences = async () => {
-      try {
-        const response = await fetch(API_URL);
-        const data = await response.json();
-        setGeofences(data || []);
-      } catch (error) {
-        console.error("Error fetching geofences:", error);
-      }
-    };
-
     fetchGeofences();
   }, []);
+  
+  // Refetch geofences when updated
+  useEffect(() => {
+    if (isGeofenceAddedOrUpdated) {
+        fetchGeofences().then(() => setIsGeofenceAddedOrUpdated()); // Reset flag after fetch
+    }
+}, [isGeofenceAddedOrUpdated]);
+
+  
+  
 
   // Track user location
   useEffect(() => {

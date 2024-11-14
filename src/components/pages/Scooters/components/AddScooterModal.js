@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import './ScooterEditModal.css'; // Reusing CSS for styling
 
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+const API_URL = `${baseURL}/scooters`;
+
 const AddScooterModal = ({ onClose, onAdd }) => {
     // State to hold the form input values
     const [formData, setFormData] = useState({
@@ -38,7 +41,7 @@ const AddScooterModal = ({ onClose, onAdd }) => {
                 status,
             };
 
-            const response = await fetch(`http://10.0.0.22:8090/api/scooters?locationName=${location}`, {
+            const response = await fetch(`${API_URL}?locationName=${location}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(requestBody),
@@ -122,6 +125,7 @@ const AddScooterModal = ({ onClose, onAdd }) => {
                     >
                         <option value="Central Park">Central Park</option>
                         <option value="Cairo">Cairo</option>
+                        <option value="Bayomi">Bayomi</option>
                     </select>
                 </form>
                 <div className="modal-buttons">

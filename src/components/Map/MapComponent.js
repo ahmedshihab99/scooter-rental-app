@@ -4,6 +4,11 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import ScooterService from "../services/ScooterService";
 import scooterIconImg from "../../assets/scooter-icon.png";
+import MapRefocusButton from "./MapRefocusButton";  // Import the refocus button
+
+
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+const API_URL = `${baseURL}/geofences`;
 
 // Define the scooter icon using the imported image
 const scooterIcon = new L.Icon({
@@ -41,9 +46,9 @@ const MapComponent = () => {
   useEffect(() => {
     const fetchGeofences = async () => {
       try {
-        const response = await fetch("http://localhost:8900/geofence");
+        const response = await fetch(API_URL);
         const data = await response.json();
-        setGeofences(data.geofences || []);
+        setGeofences(data || []);
       } catch (error) {
         console.error("Error fetching geofences:", error);
       }
@@ -63,30 +68,46 @@ const MapComponent = () => {
     const intervalId = setInterval(fetchScooters, 5000); // Polling every 5 seconds
 
     // Watch user position
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setUserPosition({ lat: latitude, lng: longitude });
-        },
-        (error) => console.error("Error watching user location:", error),
-        { enableHighAccuracy: true }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
+if (window.isSecureContext && navigator.geolocation) {
+  navigator.geolocation.watchPosition(
+    (position) => {
+      const { latitude, longitude } = position.coords;
+      setUserPosition({ lat: latitude, lng: longitude });
+    },
+    (error) => console.error("Error watching user location:", error),
+    { enableHighAccuracy: true }
+  );
+} else {
+  console.error("Geolocation is not supported or running on an insecure origin.");
+}
+
 
     // Cleanup interval
     return () => clearInterval(intervalId);
   }, []);
 
   // Function to check if a point is inside a geofence polygon
-  const isInsideGeofence = (lat, lng) => {
-    const point = L.latLng(lat, lng);
-    return geofences.some((geofence) =>
-      L.polygon(geofence.coordinates).getBounds().contains(point)
-    );
-  };
+const isInsideGeofence = (lat, lng) => {
+  const point = L.latLng(lat, lng);
+
+  return geofences.some((geofence) => {
+    // Validate if geofence coordinates are defined and not empty
+    if (!geofence.coordinates || geofence.coordinates.length === 0) {
+      console.warn(`Invalid geofence coordinates for geofence ID: ${geofence.id}`);
+      return false;
+    }
+
+    try {
+      // Create polygon and check if point is within bounds
+      const polygon = L.polygon(geofence.coordinates);
+      return polygon.getBounds().contains(point);
+    } catch (error) {
+      console.error(`Error checking geofence ID: ${geofence.id}`, error);
+      return false;
+    }
+  });
+};
+
 
   return (
     <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "100vh", width: "100%" }}>
@@ -102,7 +123,7 @@ const MapComponent = () => {
         <Polygon
           key={geofence.id}
           positions={geofence.coordinates}
-          color="blue"
+          color="green"
           pathOptions={{ fillOpacity: 0.2 }}
         >
           <Popup>{geofence.name}</Popup>
@@ -113,37 +134,7 @@ const MapComponent = () => {
   );
 };
 
-const MapRefocusButton = ({ userPosition }) => {
-  const map = useMap();
 
-  useEffect(() => {
-    if (!userPosition) return;
-
-    const refocusControl = L.control({ position: "bottomleft" });
-
-    refocusControl.onAdd = () => {
-      const div = L.DomUtil.create("div", "leaflet-bar leaflet-control leaflet-control-custom");
-      div.style.backgroundColor = "white";
-      div.style.padding = "5px";
-      div.style.cursor = "pointer";
-      div.innerHTML = "📍 Refocus";
-
-      div.onclick = () => {
-        map.setView([userPosition.lat, userPosition.lng], 13);
-      };
-
-      return div;
-    };
-
-    refocusControl.addTo(map);
-
-    return () => {
-      map.removeControl(refocusControl);
-    };
-  }, [map, userPosition]);
-
-  return null;
-};
 
 // ScooterMarker component with geofencing check
 const ScooterMarker = ({ scooter, isInsideGeofence }) => {

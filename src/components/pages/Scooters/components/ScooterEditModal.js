@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './ScooterEditModal.css';
 
+const baseURL = process.env.REACT_APP_API_BASE_URL;
+const API_URL = `${baseURL}/scooters`;
+
 const ScooterEditModal = ({ scooter, onClose, onUpdate }) => {
     // Initialize local state with current scooter details
     const [formData, setFormData] = useState({
@@ -14,19 +17,27 @@ const ScooterEditModal = ({ scooter, onClose, onUpdate }) => {
         batteryLevel: scooter.batteryLevel,
         lastMaintenance: scooter.lastMaintenance,
         status: scooter.status,
-        location: scooter.location,
+        location: scooter.location || { name: "" },  // Initialize location as an object
     });
 
     // Handle form changes
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
+        if (name === "location") {
+            setFormData({
+                ...formData,
+                location: { ...formData.location, name: value }, // Update location.name
+            });
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
     };
 
     // Handle the update action
     const handleUpdate = async () => {
+        console.log(`scooter data is ${JSON.stringify(formData)}`);
         try {
-            const response = await fetch(`http://10.0.0.22:8090/api/scooters/${scooter.id}`, {
+            const response = await fetch(`${API_URL}/${scooter.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
@@ -46,7 +57,7 @@ const ScooterEditModal = ({ scooter, onClose, onUpdate }) => {
     // Handle the delete action
     const handleDelete = async () => {
         try {
-            const response = await fetch(`http://10.0.0.22:8090/api/scooters/${scooter.id}`, {
+            const response = await fetch(`${API_URL}/${scooter.id}`, {
                 method: 'DELETE',
             });
 
@@ -83,7 +94,14 @@ const ScooterEditModal = ({ scooter, onClose, onUpdate }) => {
                         <option value="MAINTENANCE">MAINTENANCE</option>
                         <option value="OFFLINE">OFFLINE</option>
                     </select>
-                    <input type="text" name="location" value={formData.location} onChange={handleChange} placeholder="Location" />
+                    <input
+                        type="text"
+                        name="location"
+                        value={formData.location?.name || ""}
+                        onChange={handleChange}
+                        placeholder="Location Name"
+                    />
+
                 </form>
                 <div className="modal-buttons">
                     <button onClick={handleUpdate} style={{ backgroundColor: 'green' }}>Update</button>

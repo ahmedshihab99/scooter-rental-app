@@ -1,4 +1,5 @@
 .scooter-page {
+    height: 93vh;
     padding: 20px;
     font-family: Arial, sans-serif;
 }
@@ -51,6 +52,14 @@ input[type="date"]{
 }
 
 
+.modal-content select{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
 .filter-form label{
     color: #343a40;
 }
@@ -78,6 +87,8 @@ input[type="date"]{
 }
 
 .custom-table {
+    overflow-y: scroll;
+    height: 65vh;
     width: 100%;
 }
 

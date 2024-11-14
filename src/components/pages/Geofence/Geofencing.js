@@ -14,7 +14,7 @@ const GeofencingPage = () => {
     const [isAddingGeofence, setIsAddingGeofence] = useState(false);
     const [newGeofenceName, setNewGeofenceName] = useState("");
     const [newGeofenceType, setNewGeofenceType] = useState("");
-    
+
     const [isListeningForPoint, setIsListeningForPoint] = useState(false);
 
     const [pointToEditIndex, setPointToEditIndex] = useState(null);
@@ -23,10 +23,11 @@ const GeofencingPage = () => {
     const [originalGeofenceCoordinates, setOriginalGeofenceCoordinates] = useState([]);
 
     const [isAddingAPoint, setIsAddingAPoint] = useState(false);
-    
+
     const [isEditingOrAdding, setIsEditingOrAdding] = useState(false);
 
-
+    // New state variable for tracking geofence updates
+    const [isGeofenceAddedOrUpdated, setIsGeofenceAddedOrUpdated] = useState(false);
 
 
     // Fetch Geofence
@@ -42,33 +43,35 @@ const GeofencingPage = () => {
     useEffect(() => {
         fetchGeofences();
     }, []);
-    
-    
+
+
     // ADD NEW Geofence
     const handleAddGeofence = () => {
         setIsAddingGeofence(true);
         setSelectedGeofence({ name: newGeofenceName, geofenceType: "", coordinates: [] });
         setIsEditingOrAdding(true); // Lock existing geofences
+
     };
-    
+
     // UPDATE Geofence
     const handleUpdateGeofence = async () => {
         try {
             console.log(`the following is the SG ${selectedGeofence.geofenceType}`);
             await GeofenceService.updateGeofence(selectedGeofence.id, selectedGeofence); // PUT request
             setSelectedGeofence(null); // reset after updating
+            setIsGeofenceAddedOrUpdated(true);  // Set geofence updated to true
             await fetchGeofences(); // refresh list
         } catch (error) {
             console.error("Error updating geofence:", error);
         }
     };
-    
+
     const handleEditGeofence = (geofence) => {
         setSelectedGeofence(geofence);
         setOriginalGeofenceCoordinates([...geofence.coordinates]); // track original points
         setIsEditingOrAdding(true); // Lock existing geofences
     };
-    
+
     // For both ADD and UPDATE
     const handleSaveGeofence = async () => {
         try {
@@ -82,16 +85,25 @@ const GeofencingPage = () => {
             setNewGeofenceName("");
             setNewGeofenceType("");
             setIsEditingOrAdding(false); // Unlock existing geofences
+            setIsGeofenceAddedOrUpdated(true);  // Set geofence updated to true
             await fetchGeofences();
         } catch (error) {
             console.error("Error saving geofence:", error);
         }
     };
-    
-    
-    
-    
-    
+
+    // DELETE
+    const handleDeleteGeofence = async (geofenceId) => {
+        try {
+            await GeofenceService.deleteGeofence(geofenceId); // DELETE request
+            setSelectedGeofence(null);
+            setIsGeofenceAddedOrUpdated(true);  // Trigger re-fetch of geofences
+            await fetchGeofences(); // Refresh list
+        } catch (error) {
+            console.error("Error deleting geofence:", error);
+        }
+    };
+
     const handleStartListeningForPoint = () => {
         setIsListeningForPoint(true);
         setIsAddingAPoint(true); // New state to indicate a point is being added
@@ -149,7 +161,7 @@ const GeofencingPage = () => {
         setPointToDeleteIndex(index);
     };
 
-    
+
 
     const handleClearCoordinates = () => {
         setSelectedGeofence((prevGeofence) => ({
@@ -188,23 +200,33 @@ const GeofencingPage = () => {
                     isAddingPoint={isListeningForPoint}
                     editable={!!selectedGeofence}
                     isEditingOrAdding={isEditingOrAdding} // Pass the new prop
+                    isGeofenceAddedOrUpdated={isGeofenceAddedOrUpdated} // Pass the new prop
+                    setIsGeofenceAddedOrUpdated={() => setIsGeofenceAddedOrUpdated(false)} // Reset function
                 />
 
 
 
 
                 <div className="geofence-control">
+                    {/* Geofences list */}
                     <List>
                         {geofences.map((geofence) => (
-                            <CustomListItem
-                                button
-                                key={geofence.id}
-                                onClick={() => handleEditGeofence(geofence)}
-                            >
-                                {geofence.name}
-                            </CustomListItem>
+                            <div key={geofence.id} style={{ display: "flex", alignItems: "center" }}>
+                                <CustomListItem button onClick={() => handleEditGeofence(geofence)}>
+                                    {geofence.name}
+                                </CustomListItem>
+                                <Button
+                                    variant="outlined"
+                                    color="secondary"
+                                    style={{ marginLeft: "10px" }}
+                                    onClick={() => handleDeleteGeofence(geofence.id)}
+                                >
+                                    Delete
+                                </Button>
+                            </div>
                         ))}
                     </List>
+
 
                     {selectedGeofence ? (
                         <div>
@@ -276,7 +298,8 @@ const GeofencingPage = () => {
                                     Cancel Adding Point
                                 </Button>
                             )}
-
+                            
+                            {/* Geofence Points */}
                             <List>
                                 {selectedGeofence.coordinates.map((point, index) => (
                                     <CustomListItem
@@ -299,14 +322,14 @@ const GeofencingPage = () => {
                                 value={newGeofenceName}
                                 onChange={(e) => setNewGeofenceName(e.target.value)}
                             />
-                            
-                            <CustomTextField style={{marginTop:'10px'}}
+
+                            <CustomTextField style={{ marginTop: '10px' }}
                                 label="Type"
                                 variant="outlined"
                                 value={newGeofenceType}
                                 onChange={(e) => setNewGeofenceType(e.target.value)}
                             />
-                            
+
                             <Button
                                 variant="contained"
                                 color="primary"

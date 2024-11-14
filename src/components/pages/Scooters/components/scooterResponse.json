@@ -1,0 +1,79 @@
+[
+    {
+        "id": 22,
+        "createdAt": "2024-10-30T16:53:54.044141",
+        "updatedAt": "2024-11-14T17:05:47.534439",
+        "serialNumber": "SN45999",
+        "longitude": 31.352577,
+        "latitude": 29.981747,
+        "batteryHealth": 86,
+        "batteryLevel": 75,
+        "lastMaintenance": "2024-10-20",
+        "status": "AVAILABLE",
+        "locationId": null,
+        "location": null
+    },
+    {
+        "id": 47,
+        "createdAt": "2024-11-14T21:05:39.198585",
+        "updatedAt": "2024-11-14T21:05:39.198585",
+        "serialNumber": "SNAhm2",
+        "longitude": 31.268159,
+        "latitude": 29.976518,
+        "batteryHealth": 23,
+        "batteryLevel": 95,
+        "lastMaintenance": "2024-11-14",
+        "status": "IN_USE",
+        "locationId": null,
+        "location": {
+            "id": 13,
+            "createdAt": "2024-11-13T18:01:43.591031",
+            "updatedAt": "2024-11-14T21:05:39.202629",
+            "name": "Bayomi",
+            "description": null,
+            "geofenceType": "POLYGON",
+            "centralLongitude": null,
+            "centralLatitude": null,
+            "radius": null,
+            "maxCapacity": 0,
+            "currentScooters": 1,
+            "coordinates": [
+                {
+                    "id": 145,
+                    "createdAt": "2024-11-14T19:55:49.871987",
+                    "updatedAt": "2024-11-14T19:55:49.871987",
+                    "longitude": 31.271649,
+                    "latitude": 30.031694
+                },
+                {
+                    "id": 146,
+                    "createdAt": "2024-11-14T19:55:49.871987",
+                    "updatedAt": "2024-11-14T19:55:49.871987",
+                    "longitude": 31.226291,
+                    "latitude": 30.033180
+                },
+                {
+                    "id": 147,
+                    "createdAt": "2024-11-14T19:55:49.882019",
+                    "updatedAt": "2024-11-14T19:55:49.882019",
+                    "longitude": 31.221824,
+                    "latitude": 29.994521
+                },
+                {
+                    "id": 148,
+                    "createdAt": "2024-11-14T19:55:49.882019",
+                    "updatedAt": "2024-11-14T19:55:49.882019",
+                    "longitude": 31.281958,
+                    "latitude": 29.980541
+                },
+                {
+                    "id": 149,
+                    "createdAt": "2024-11-14T19:55:49.882019",
+                    "updatedAt": "2024-11-14T19:55:49.882019",
+                    "longitude": 31.288492,
+                    "latitude": 30.013556
+                }
+            ]
+        }
+    }
+]
