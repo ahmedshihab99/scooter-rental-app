@@ -10,7 +10,7 @@ const FilterForm = ({
     return (
         <div className="filter-form">
             {fields.map((field, index) => (
-                <div className='filter-form-input-element' key={index}>
+                <div className="filter-form-input-element" key={index}>
                     <label>{field.label}</label>
                     {field.type === 'date' ? (
                         <input
@@ -27,6 +27,38 @@ const FilterForm = ({
                                 </option>
                             ))}
                         </select>
+                    ) : field.type === 'range' ? (
+                        <div className="filter-form-range">
+                            {field.rangeType === 'date' ? (
+                                 <>
+                                 <label>From:</label>
+                                 <input
+                                     type="date"
+                                     onChange={(e) => field.onRangeChange({ min: e.target.value, max: field.max })}
+                                 />
+                                 <label>To:</label>
+                                 <input
+                                     type="date"
+                                     onChange={(e) => field.onRangeChange({ min: field.min, max: e.target.value })}
+                                 />
+                             </>
+                            ) : field.rangeType === 'value' ? (
+                                <>
+                                    <label>Min:</label>
+                                    <input
+                                        type="number"
+                                        placeholder="Min value"
+                                        onChange={(e) => field.onRangeChange({ min: e.target.value, max: field.max })}
+                                    />
+                                    <label>Max:</label>
+                                    <input
+                                        type="number"
+                                        placeholder="Max value"
+                                        onChange={(e) => field.onRangeChange({ min: field.min, max: e.target.value })}
+                                    />
+                                </>
+                            ) : null}
+                        </div>
                     ) : (
                         <input
                             type="text"
@@ -48,8 +80,6 @@ const FilterForm = ({
                     </label>
                 </div>
             ))}
-
-            <button onClick={onFilter}>Apply Filters</button>
 
             <div className="action-buttons">
                 {buttons.map((button, index) => (

@@ -4,6 +4,8 @@ import '../styles/MainLayout.css';
 import MenuItemWithSub from '../reusableComponents/MenuItemWithSub';
 import * as FaIcons from 'react-icons/fa';
 import { LanguageContext } from '../reusableComponents/locales/LanguageContext';
+import ClipLoader from "react-spinners/ClipLoader"; // Import the spinner
+
 
 const MainLayout = ({ user }) => {
   const { t, switchLanguage } = useContext(LanguageContext); // Access translate function from LanguageContext
@@ -45,8 +47,13 @@ const MainLayout = ({ user }) => {
   }, []);
 
   if (!user) {
-    return <div>Loading...</div>; // Show loading if user data isn't available yet
+    return (
+      <div className="loading-spinner">
+        <ClipLoader color="#3498db" loading={!user} size={90} />
+      </div>
+    );
   }
+  
 
   return (
     <div className={`layout ${isCollapsed ? 'collapsed' : ''}`}>
@@ -77,11 +84,11 @@ const MainLayout = ({ user }) => {
               icon={FaIcons.FaMap}
               path="/maps"
               subItems={[
-                { label: t["location"], path: '/maps/location', icon: FaIcons.FaMapMarkerAlt },
-                { label: t["heat_map"], path: '/maps/heat-map', icon: FaIcons.FaFire },
-                { label: t["countries"], path: '/maps/countries', icon: FaIcons.FaGlobe },
-                { label: t["cities"], path: '/maps/cities', icon: FaIcons.FaCity },
-                { label: t["areas"], path: '/maps/areas', icon: FaIcons.FaDrawPolygon },
+                // { label: t["location"], path: '/maps/location', icon: FaIcons.FaMapMarkerAlt },
+                // { label: t["heat_map"], path: '/maps/heat-map', icon: FaIcons.FaFire },
+                // { label: t["countries"], path: '/maps/countries', icon: FaIcons.FaGlobe },
+                // { label: t["cities"], path: '/maps/cities', icon: FaIcons.FaCity },
+                // { label: t["areas"], path: '/maps/areas', icon: FaIcons.FaDrawPolygon },
               ]}
               isCollapsed={isCollapsed}
             />
@@ -90,7 +97,7 @@ const MainLayout = ({ user }) => {
           <li>
             <MenuItemWithSub
               label={t["geofence"]}
-              icon={FaIcons.FaMap}
+              icon={FaIcons.FaDrawPolygon }
               path="/geofence"
               subItems={[
                 
@@ -105,8 +112,8 @@ const MainLayout = ({ user }) => {
               icon={FaIcons.FaUserFriends}
               path="/customers"
               subItems={[
-                { label: "Registery Page", path: 'customers/customers_registery_page', icon: FaIcons.FaMapMarkerAlt },
-                { label: t["heat_map"], path: '/maps/heat-map', icon: FaIcons.FaFire },
+                { label: "Registery Page", path: 'customers/customers_registery_page', icon: FaIcons.FaClipboardList  },
+                // { label: t["heat_map"], path: '/maps/heat-map', icon: FaIcons.FaFire },
                
               ]}
               isCollapsed={isCollapsed}
@@ -121,8 +128,8 @@ const MainLayout = ({ user }) => {
               path="/finance"
               subItems={[
                 { label: t["billing"], path: '/finance/billing', icon: FaIcons.FaMoneyBill },
-                { label: t["transactions"], path: '/finance/transactions', icon: FaIcons.FaMoneyBill },
-                { label: t["transfer_list"], path: '/finance/transfer-list', icon: FaIcons.FaHandHoldingUsd },
+                // { label: t["transactions"], path: '/finance/transactions', icon: FaIcons.FaMoneyBill },
+                // { label: t["transfer_list"], path: '/finance/transfer-list', icon: FaIcons.FaHandHoldingUsd },
                 { label: t["refund_list"], path: '/finance/refund-list', icon: FaIcons.FaMoneyBill },
               ]}
               isCollapsed={isCollapsed}
@@ -152,7 +159,7 @@ const MainLayout = ({ user }) => {
   
           <li>
             <MenuItemWithSub
-              label={t["human_resources"]}
+              label={t["human_resources"] || "HR"}
               icon={FaIcons.FaUser}
               path="/human-resources"
               subItems={[
@@ -204,7 +211,7 @@ const MainLayout = ({ user }) => {
             {/* Add more options as needed */}
           </select>
           <div className="user-info" onClick={toggleDropdown}>
-            <img src={user.icon} alt="User Icon" className="user-icon" />
+          <img src={user.icon || "/images/default-user.png"} alt="User Icon" className="user-icon" />
             <span className="username">{user.firstName}</span>
           </div>
 

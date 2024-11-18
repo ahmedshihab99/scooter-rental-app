@@ -1,7 +1,7 @@
 // App.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import Profile from "./components/pages/Profile/Profile";
+import  "./components/pages/Profile/Profile";
 import DashboardPage from "./components/pages/Dashboard/DashboardPage";
 import UserMapPage from "./components/pages/UserMap/UserMapPage";
 import StatisticsPage from "./components/pages/Statistics/StatisticsPage";
@@ -15,12 +15,27 @@ import Billing from "./components/pages/Finance/Billing/Billing";
 import Geofence from "./components/pages/Geofence/Geofencing"
 import "./styles/global.css";
 import { LanguageProvider } from "./components/reusableComponents/locales/LanguageContext";
+import ClipLoader from "react-spinners/ClipLoader"; // Import the spinner
 import User from "./components/Models/User";  // Import the User model
+
+
+const Profile = React.lazy(() => import("./components/pages/Profile/Profile"));
 
 function App() {
   
   
   const [user, setUser] = useState(null);
+  
+  const ProtectedRoute = ({ user, children }) => {
+    if (user === null) return (
+      <div className="loading-spinner">
+        <ClipLoader color="#3498db" loading={!user} size={90} />
+      </div> // Handle loading state
+    );
+    if (!user) return <Navigate to="/login" />;
+    return children;
+  };
+  
 
   useEffect(() => {
     // Simulating a fetch call to an API endpoint
@@ -43,13 +58,25 @@ function App() {
       <Router>
         <Routes>
           {/* Public routes (outside of MainLayout) */}
+          {/*  Usage in Routes */}
+          <Route path="/" element={<ProtectedRoute user={user}><MainLayout user={user} /></ProtectedRoute>}></Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
 
           {/* Protected routes inside the MainLayout */}
           <Route path="/" element={<MainLayout user={user} />}>
+          {/* <Route path="/" element={<ProtectedRoute user={user}><MainLayout user={user} /></ProtectedRoute>}> */}
             <Route index element={<Navigate to="/maps" />} /> {/* Default page */}
-            <Route path="/profile" element={<Profile user={user} />} /> {/* Pass user as prop */}
+            <Route
+              path="/profile"
+              element={
+                <Suspense fallback={<div className="loading-spinner">
+                  <ClipLoader color="#3498db" loading={!user} size={90} />
+                </div>}>
+                  <Profile user={user} />
+                </Suspense>
+              }
+            /> {/* Pass user as prop */}
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="maps" element={<UserMapPage />} />
             <Route path="geofence" element={<Geofence />} />

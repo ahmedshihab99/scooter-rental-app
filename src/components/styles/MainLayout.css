@@ -4,6 +4,15 @@
   min-height: 100vh;
 }
 
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  background-color: #f9f9f9; /* Optional: Add a subtle background color */
+}
+
+
 .sidebar {
   display: flex;
   flex-direction: column;

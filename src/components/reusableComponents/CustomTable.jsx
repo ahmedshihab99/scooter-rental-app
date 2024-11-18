@@ -1,8 +1,9 @@
 // CustomTable.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+
 import axios from 'axios';
 
-const CustomTable = ({ columns, apiEndpoint, filters, sumFields = null }) => {
+const CustomTable = forwardRef(({ columns, apiEndpoint, filters, sumFields = null }, ref) => {
     const [data, setData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
 
@@ -17,17 +18,47 @@ const CustomTable = ({ columns, apiEndpoint, filters, sumFields = null }) => {
     }, [apiEndpoint]);
 
     useEffect(() => {
-        // Apply filters whenever filters prop changes
         let newFilteredData = [...data];
-        filters.forEach(filter => {
-            if (filter.value !== '' && filter.value !== false) { // Only apply non-empty filters
-                newFilteredData = newFilteredData.filter(item =>
+    
+        filters.forEach((filter) => {
+            if (filter.type === 'range' && filter.rangeType === 'date' && filter.value) {
+                const { min, max } = filter.value;
+    
+                newFilteredData = newFilteredData.filter((item) => {
+                    const fieldValue = new Date(item[filter.field]);
+                    if (isNaN(fieldValue.getTime())) return false;
+    
+                    return (
+                        (min ? new Date(min) <= fieldValue : true) &&
+                        (max ? fieldValue <= new Date(max) : true)
+                    );
+                });
+            } else if (filter.type === 'range' && filter.rangeType === 'value' && filter.value) {
+                const { min, max } = filter.value;
+    
+                newFilteredData = newFilteredData.filter((item) => {
+                    const fieldValue = parseFloat(item[filter.field]);
+                    if (isNaN(fieldValue)) return false;
+    
+                    return (
+                        (min === null || fieldValue >= min) &&
+                        (max === null || fieldValue <= max)
+                    );
+                });
+            } else if (filter.value) {
+                newFilteredData = newFilteredData.filter((item) =>
                     item[filter.field]?.toString().includes(filter.value.toString())
                 );
             }
         });
+    
         setFilteredData(newFilteredData);
     }, [filters, data]);
+    
+    
+    
+    
+    
 
     const updateTable = () => {
         // Re-fetch or update table data
@@ -38,6 +69,11 @@ const CustomTable = ({ columns, apiEndpoint, filters, sumFields = null }) => {
             })
             .catch(error => console.error('Error updating table:', error));
     };
+    
+    // Expose the updateTable function to the parent via the ref
+    useImperativeHandle(ref, () => ({
+        updateTable,
+    }));
 
     // Helper function to get nested field values using dot notation
     const getFieldValue = (row, fieldPath) => {
@@ -82,6 +118,6 @@ const CustomTable = ({ columns, apiEndpoint, filters, sumFields = null }) => {
             </table>
         </div>
     );
-};
+});
 
 export default CustomTable;

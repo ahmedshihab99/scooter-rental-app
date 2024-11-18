@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import FilterForm from '../../reusableComponents/FilterForm'; // Ensure this path is correct
 import CustomTable from '../../reusableComponents/CustomTable'; // Ensure this path is correct
 import ScooterEditModal from './components/ScooterEditModal'; // Corrected the path
 import AddScooterModal from './components/AddScooterModal'; // Corrected the path
 
 import './ScootersPage.css';
+
 
 const ScooterPage = () => {
     // State variables for filters
@@ -16,6 +17,15 @@ const ScooterPage = () => {
     const [latitude, setLatitude] = useState('');
     const [batteryHealth, setBatteryHealth] = useState('');
     const [batteryLevel, setBatteryLevel] = useState('');
+    
+    
+    const [batteryLevelMin, setBatteryLevelMin] = useState('');
+    const [batteryLevelMax, setBatteryLevelMax] = useState('');
+
+    const [createdAtMin, setCreatedAtMin] = useState('');
+    const [createdAtMax, setCreatedAtMax] = useState('');
+
+    
     const [lastMaintenance, setLastMaintenance] = useState('');
     const [status, setStatus] = useState('');
     const [location, setLocation] = useState('');
@@ -26,8 +36,20 @@ const ScooterPage = () => {
     const [selectedScooter, setSelectedScooter] = useState(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
     
+    
     const baseURL = process.env.REACT_APP_API_BASE_URL;
-    console.log("Base URL:", baseURL);
+    // console.log("Base URL:", baseURL);
+    
+    // useRef object for child refrencing functionality
+    const tableRef = useRef();
+    // Handle Refresh
+    const handleRefresh = () => {
+        if (tableRef.current) {
+            tableRef.current.updateTable();
+        }
+        console.log('Refreshing table data...');
+        applyFilters(); // Reapply filters after refreshing data
+    };
 
     
 
@@ -40,7 +62,7 @@ const ScooterPage = () => {
     // Function to refresh the table after adding a scooter
     const handleAddScooter = () => {
         closeAddModal();
-        refreshTable(); // Ensure data consistency by re-fetching the table
+        handleRefresh(); // Ensure data consistency by re-fetching the table
     };
 
     // Function to open the Edit Scooter modal
@@ -58,19 +80,14 @@ const ScooterPage = () => {
     // Function to refresh the table after update
     const handleUpdate = () => {
         closeEditModal();
-        refreshTable(); // Ensure the table refreshes
+        handleRefresh(); // Ensure the table refreshes
     };
 
-    // Function to re-fetch data (mock example)
-    const refreshTable = () => {
-        // Logic to re-fetch the data goes here. E.g., make a new API call.
-        console.log('Refreshing table data...');
-        applyFilters(); // Reapply filters after refreshing data
-    };
+   
 
     // Apply filters based on state values
     const applyFilters = () => {
-        setFilters([
+        const activeFilters = [
             { field: 'id', value: id },
             { field: 'createdAt', value: createdAt },
             { field: 'updatedAt', value: updatedAt },
@@ -82,8 +99,87 @@ const ScooterPage = () => {
             { field: 'lastMaintenance', value: lastMaintenance },
             { field: 'status', value: status },
             { field: 'location', value: location },
-        ]);
+            { 
+                field: 'createdAt',
+                type: 'range',
+                rangeType: 'date',
+                value: { min: createdAtMin || null, max: createdAtMax || null },
+            },
+            { 
+                field: 'batteryLevel',
+                type: 'range',
+                rangeType: 'value',
+                value: { min: batteryLevelMin || null, max: batteryLevelMax || null },
+            },
+        ].filter(Boolean); // Remove any null or undefined filters
+    
+        setFilters(activeFilters);
     };
+    
+    // Handle range filter changes directly
+    const handleBatteryLevelRangeChange = (range) => {
+    const min = range.min || '';
+    const max = range.max || '';
+    console.log(`min is ${min} max is ${max}`);
+
+    // Use a callback to update both states simultaneously and then apply filters
+    setBatteryLevelMin(() => {
+        setBatteryLevelMax(() => {
+            applyFilters();
+            return max;
+        });
+        return min;
+    });
+};
+
+const handleCreatedAtRangeChange = (range) => {
+    const min = range.min ? new Date(range.min).toISOString() : ''; // Convert to ISO format
+    const max = range.max ? new Date(range.max).toISOString() : '';
+    setCreatedAtMin(min);
+    setCreatedAtMax(max);
+};
+
+
+
+    
+
+    
+     // Automatically update filters when filter state changes
+     useEffect(() => {
+        const activeFilters = [
+            { field: 'id', value: id },
+            { field: 'serialNumber', value: serialNumber },
+            { field: 'longitude', value: longitude },
+            { field: 'latitude', value: latitude },
+            { field: 'batteryHealth', value: batteryHealth },
+            { field: 'lastMaintenance', value: lastMaintenance },
+            { field: 'status', value: status },
+            { field: 'location', value: location },
+        ];
+    
+        if (batteryLevelMin || batteryLevelMax) {
+            activeFilters.push({
+                field: 'batteryLevel',
+                type: 'range',
+                rangeType: 'value',
+                value: { min: batteryLevelMin || null, max: batteryLevelMax || null },
+            });
+        }
+    
+        if (createdAtMin || createdAtMax) {
+            activeFilters.push({
+                field: 'createdAt',
+                type: 'range',
+                rangeType: 'date',
+                value: { min: createdAtMin || null, max: createdAtMax || null },
+            });
+        }
+    
+        setFilters(activeFilters.filter(Boolean));
+    }, [id, serialNumber, longitude, latitude, batteryHealth, lastMaintenance, status, location, batteryLevelMin, batteryLevelMax, createdAtMin, createdAtMax]);
+    
+    
+
 
     // Handle different action buttons
     const handleAction = (action) => {
@@ -108,6 +204,9 @@ const ScooterPage = () => {
                 break;
         }
     };
+    
+    
+
 
     return (
         <div className="scooter-page">
@@ -138,6 +237,21 @@ const ScooterPage = () => {
                         onChange: setStatus,
                     },
                     { label: 'Location', placeholder: 'Filter by Location', onChange: setLocation },
+                    {
+                        label: 'Battery Level Range',
+                        type: 'range',
+                        rangeType: 'value',
+                        min: 0,
+                        max: 100,
+                        onRangeChange: handleBatteryLevelRangeChange,
+                    },
+                    {
+                        label: 'Created At Range',
+                        type: 'range',
+                        rangeType: 'date',
+                        onRangeChange: handleCreatedAtRangeChange,
+                    },
+                    
                 ]}
                 buttons={[
                     { label: 'Update addresses', color: 'green', action: 'updateAddresses' },
@@ -151,6 +265,7 @@ const ScooterPage = () => {
             />
 
             <CustomTable
+                ref={tableRef}
                 columns={[
                     { label: 'ID', field: 'id' },
                     { label: 'Created At', field: 'createdAt' },

@@ -1,5 +1,6 @@
 // Profile.js
 import React, { useState } from 'react';
+import ClipLoader from "react-spinners/ClipLoader"; // Import the spinner
 import "./Profile.css";
 
 const ProfilePage = ({ user, onSaveName }) => {
@@ -38,9 +39,7 @@ const ProfilePage = ({ user, onSaveName }) => {
     setIsEditingName(false);
   };
 
-  if (!user) {
-    return <div>Loading...</div>; // Loading state while user data is being fetched
-  }
+  
 
   return (
     <div className="profile-page">
