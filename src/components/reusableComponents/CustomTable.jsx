@@ -27,12 +27,14 @@ const CustomTable = forwardRef(({ columns, apiEndpoint, filters, sumFields = nul
                 newFilteredData = newFilteredData.filter((item) => {
                     const fieldValue = new Date(item[filter.field]);
                     if (isNaN(fieldValue.getTime())) return false;
-    
+                
+                    // Ensure both min and max are considered properly
                     return (
-                        (min ? new Date(min) <= fieldValue : true) &&
-                        (max ? fieldValue <= new Date(max) : true)
+                        (!min || new Date(min) <= fieldValue) &&
+                        (!max || fieldValue <= new Date(max))
                     );
                 });
+                
             } else if (filter.type === 'range' && filter.rangeType === 'value' && filter.value) {
                 const { min, max } = filter.value;
     

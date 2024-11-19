@@ -1,3 +1,25 @@
+:root {
+    --background-color: #181818;
+    --container-background-color: #1e1e1e;
+    --text-color: #ffffff;
+    --input-background-color: #001127;
+    --input-border-color: #00214a;
+    --hover-background-color: #001f43;
+    --play-button-background-color: #004fff;
+    --play-button-color: #ffffff;
+    --tag-background-color: #1e1e1e;
+    --tag-hover-background-color: #333333;
+    --primary-color: #004fff;
+    --secondary-color: #0077ff;
+    --card-title-color: #fff;
+    --body-background-color: #000811;
+    --card-container-background-color: #000e1e;
+    --card-container-border-color:#001d46;
+    --card-container-border-hover-color:#194786;
+    --topbar-and-footer-container-background-color: #002652;
+    --side-bar-container-color: #00ddff;
+}
+
 /* DashboardPage.css */
 /* .dashboard {
     padding: 20px;
@@ -13,9 +35,18 @@
     text-align: center;
 }
 
+.dashboard h3{
+    color: #fff;
+}
+
 .filter {
     margin-bottom: 20px;
     text-align: center;
+}
+
+.total-rents-filter-form .filter-form{
+    display: flex;
+    gap: 10px;
 }
 
 .dashboard-row {
@@ -26,8 +57,8 @@
 }
 
 .card {
-    background-color: #fff;
-    border: 1px solid #ccc;
+    background-color: var(--card-container-background-color);
+    border: 1px solid var(--card-container-border-color);
     border-radius: 8px;
     padding: 15px;
     width: calc(50% - 10px);
@@ -35,11 +66,16 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     /* margin-bottom: 20px; */
     height: 350px;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
 }
 
-.custom-table {
-    overflow: scroll;
+.card:hover{
+    border: 1px solid var(--card-container-border-hover-color);
+}
+
+.dashboard .custom-table {
+    height: 50%;
+    overflow-y: scroll;
 }
 
 .chart-placeholder {

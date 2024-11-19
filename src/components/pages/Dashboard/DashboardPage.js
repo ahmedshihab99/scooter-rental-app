@@ -21,12 +21,12 @@ const DashboardPage = () => {
                         apiUrl={`${baseURL}/user-registrations`}
                         type="line"
                         label="User Registrations"
-                        color="rgb(75, 192, 192)"
+                        color="#49a7ff"
                         xField="date"
                         yField="registrations"
                         xTitle="Date"
                         yTitle="Registrations"
-                        axesColor="#333"
+                        axesColor="#fff"
                     />
                 </div>
                 <div className="card">
@@ -34,7 +34,7 @@ const DashboardPage = () => {
                         apiUrl={`${baseURL}/total-duration`}
                         type="bar"
                         label="Total Duration"
-                        color="rgb(255, 99, 132)"
+                        color="rgb(255, 54, 98)"
                         xField="date"
                         yField="duration"
                         xTitle="Date"

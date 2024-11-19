@@ -1,7 +1,30 @@
+:root {
+  --background-color: #181818;
+  --container-background-color: #1e1e1e;
+  --text-color: #ffffff;
+  --input-background-color: #001a39;
+  --input-border-color: #00214a;
+  --hover-background-color: #001f43;
+  --play-button-background-color: #004fff;
+  --play-button-color: #ffffff;
+  --tag-background-color: #1e1e1e;
+  --tag-hover-background-color: #333333;
+  --primary-color: #004fff;
+  --secondary-color: #0077ff;
+  --card-title-color: #fff;
+  --body-background-color: #000811;
+  --card-container-background-color: #000e1e;
+  --topbar-and-footer-container-background-color: #002652;
+  --side-bar-container-color: #001329;
+}
+
 /* MainLayout.css */
 .layout {
   display: flex;
   min-height: 100vh;
+  margin: 0; /* Ensure no extra margin is added */
+  padding: 0; /* Remove default padding */
+
 }
 
 .loading-spinner {
@@ -18,7 +41,7 @@
   flex-direction: column;
   align-items: center;
   width: 180px;
-  background-color: #1f1f1f;
+  background-color: var(--side-bar-container-color);
   color: white;
   padding: 20px;
   transition: width 0.3s ease;
@@ -136,10 +159,11 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  background-color: var(--body-background-color);
 }
 
 .topbar {
-  background-color: #525252;
+  background-color: var(--topbar-and-footer-container-background-color);
   padding: 10px;
   display: flex;
   justify-content: space-between;

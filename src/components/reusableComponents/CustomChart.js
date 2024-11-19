@@ -50,19 +50,26 @@ const CustomChart = ({
                         plugins: {
                             legend: {
                                 position: 'top',
+                                labels: {
+                                    color: '#FFFFFF', // Set legend labels to white
+                                },
                             },
                             title: {
                                 display: true,
                                 text: `${label} Over Time`,
+                                color: '#FFFFFF', // Set chart title to white
                             },
                         },
                         scales: {
                             x: {
                                 type: 'category',
-                                title: {
-                                    display: true,
-                                    text: xTitle,
-                                    color: axesColor,
+                                // title: {
+                                //     display: true,
+                                //     text: xTitle,
+                                //     color: axesColor,
+                                // },
+                                ticks: {
+                                    color: '#FFFFFF', // Set x-axis tick labels to white
                                 },
                                 // grid: {
                                 //     color: axesColor,
@@ -70,10 +77,13 @@ const CustomChart = ({
                             },
                             y: {
                                 beginAtZero: true,
-                                title: {
-                                    display: true,
-                                    text: yTitle,
-                                    color: axesColor,
+                                // title: {
+                                //     display: true,
+                                //     text: yTitle,
+                                //     color: axesColor,
+                                // },
+                                ticks: {
+                                    color: '#FFFFFF', // Set x-axis tick labels to white
                                 },
                                 
                             },

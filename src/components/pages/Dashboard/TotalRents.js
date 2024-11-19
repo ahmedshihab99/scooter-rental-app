@@ -68,7 +68,10 @@ const TotalRents = () => {
     return (
         <div className="card">
             <h3>Total Rents</h3>
-            <FilterForm fields={fields} onFilter={() => { }} />
+            <div className="total-rents-filter-form">
+                <FilterForm fields={fields} onFilter={() => { }} />
+
+            </div>
             <CustomTable columns={columns} apiEndpoint={`${baseURL}/rent_list`} filters={filters} />
         </div>
     );

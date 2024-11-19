@@ -9,6 +9,18 @@ const FilterForm = ({
 }) => {
     return (
         <div className="filter-form">
+            
+            <div className="action-buttons">
+                {buttons.map((button, index) => (
+                    <button
+                        key={index}
+                        style={{ backgroundColor: button.color }}
+                        onClick={() => onAction(button.action)}
+                    >
+                        {button.label}
+                    </button>
+                ))}
+            </div>
             {fields.map((field, index) => (
                 <div className="filter-form-input-element" key={index}>
                     <label>{field.label}</label>
@@ -81,17 +93,7 @@ const FilterForm = ({
                 </div>
             ))}
 
-            <div className="action-buttons">
-                {buttons.map((button, index) => (
-                    <button
-                        key={index}
-                        style={{ backgroundColor: button.color }}
-                        onClick={() => onAction(button.action)}
-                    >
-                        {button.label}
-                    </button>
-                ))}
-            </div>
+            
         </div>
     );
 };

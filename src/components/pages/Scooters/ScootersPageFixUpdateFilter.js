@@ -1,11 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import FilterForm from '../../reusableComponents/FilterForm'; // Ensure this path is correct
 import CustomTable from '../../reusableComponents/CustomTable'; // Ensure this path is correct
 import ScooterEditModal from './components/ScooterEditModal'; // Corrected the path
 import AddScooterModal from './components/AddScooterModal'; // Corrected the path
 
 import './ScootersPage.css';
-
 
 const ScooterPage = () => {
     // State variables for filters
@@ -18,13 +17,11 @@ const ScooterPage = () => {
     const [batteryHealth, setBatteryHealth] = useState('');
     const [batteryLevel, setBatteryLevel] = useState('');
 
-
     const [batteryLevelMin, setBatteryLevelMin] = useState('');
     const [batteryLevelMax, setBatteryLevelMax] = useState('');
 
     const [createdAtMin, setCreatedAtMin] = useState('');
     const [createdAtMax, setCreatedAtMax] = useState('');
-
 
     const [lastMaintenance, setLastMaintenance] = useState('');
     const [status, setStatus] = useState('');
@@ -36,22 +33,18 @@ const ScooterPage = () => {
     const [selectedScooter, setSelectedScooter] = useState(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
-
     const baseURL = process.env.REACT_APP_API_BASE_URL;
-    // console.log("Base URL:", baseURL);
 
-    // useRef object for child refrencing functionality
+    // useRef object for child referencing functionality
     const tableRef = useRef();
+
     // Handle Refresh
     const handleRefresh = () => {
         if (tableRef.current) {
             tableRef.current.updateTable();
         }
         console.log('Refreshing table data...');
-        applyFilters(); // Reapply filters after refreshing data
     };
-
-
 
     // Function to open the Add Scooter modal
     const openAddModal = () => setIsAddModalOpen(true);
@@ -83,8 +76,6 @@ const ScooterPage = () => {
         handleRefresh(); // Ensure the table refreshes
     };
 
-
-
     // Apply filters based on state values
     const applyFilters = () => {
         const activeFilters = [
@@ -114,23 +105,12 @@ const ScooterPage = () => {
         ].filter(Boolean); // Remove any null or undefined filters
 
         setFilters(activeFilters);
-    };
 
-
-
-    const stateSetters = {
-        batteryLevel: [setBatteryLevelMin, setBatteryLevelMax],
-        createdAt: [setCreatedAtMin, setCreatedAtMax],
-        // Add other fields here
+        console.log('Filters applied:', activeFilters);
     };
 
     const handleRangeChange = (field, range, type = 'value') => {
-        const min =
-            type === 'date'
-                ? range.min
-                    ? new Date(new Date(range.min).setHours(0, 0, 0, 0)).toISOString()
-                    : ''
-                : range.min || '';
+        const min = range.min || '';
         const max =
             type === 'date'
                 ? range.max
@@ -138,76 +118,16 @@ const ScooterPage = () => {
                     : ''
                 : range.max || '';
 
-        const [setMin, setMax] = stateSetters[field] || [];
-
-        if (setMin && setMax) {
-            setMin(min);
-            setMax(max);
-            applyFilters();
+        if (field === 'batteryLevel') {
+            setBatteryLevelMin(min);
+            setBatteryLevelMax(max);
+        } else if (field === 'createdAt') {
+            setCreatedAtMin(min);
+            setCreatedAtMax(max);
         } else {
-            console.warn(`No state setters defined for field: ${field}`);
+            console.warn(`Unhandled range field: ${field}`);
         }
     };
-
-
-
-
-
-    // Automatically update filters when filter state changes
-    useEffect(() => {
-        const debounceTimeout = setTimeout(() => {
-            const activeFilters = [
-                { field: 'id', value: id },
-                { field: 'serialNumber', value: serialNumber },
-                { field: 'longitude', value: longitude },
-                { field: 'latitude', value: latitude },
-                { field: 'batteryHealth', value: batteryHealth },
-                { field: 'lastMaintenance', value: lastMaintenance },
-                { field: 'status', value: status },
-                { field: 'location', value: location },
-            ];
-
-            if (batteryLevelMin || batteryLevelMax) {
-                activeFilters.push({
-                    field: 'batteryLevel',
-                    type: 'range',
-                    rangeType: 'value',
-                    value: { min: batteryLevelMin || null, max: batteryLevelMax || null },
-                });
-            }
-
-            if (createdAtMin || createdAtMax) {
-                activeFilters.push({
-                    field: 'createdAt',
-                    type: 'range',
-                    rangeType: 'date',
-                    value: { min: createdAtMin || null, max: createdAtMax || null },
-                });
-            }
-
-            setFilters(activeFilters.filter(Boolean));
-        }, 300); // 300ms debounce delay
-
-        // Cleanup timeout on value change
-        return () => clearTimeout(debounceTimeout);
-    }, [
-        id,
-        serialNumber,
-        longitude,
-        latitude,
-        batteryHealth,
-        lastMaintenance,
-        status,
-        location,
-        batteryLevelMin,
-        batteryLevelMax,
-        createdAtMin,
-        createdAtMax,
-    ]);
-
-
-
-
 
     // Handle different action buttons
     const handleAction = (action) => {
@@ -233,13 +153,11 @@ const ScooterPage = () => {
         }
     };
 
-
     return (
         <div className="scooter-page">
-
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <h2>Scooters</h2>
-                <div style={{ display: "flex", flexDirection: "row", maxHeight: "80vh", gap: "20px" }}>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <FilterForm
                         fields={[
                             { label: 'ID', placeholder: 'Filter by ID', onChange: setId },
@@ -279,24 +197,26 @@ const ScooterPage = () => {
                                 rangeType: 'date',
                                 onRangeChange: (range) => handleRangeChange('createdAt', range, 'date'),
                             },
-
-
                         ]}
                         buttons={[
-                            { label: 'Export table', color: 'green', action: 'exportTable' },
+                            { label: 'Filter', color: 'green', action: 'exportTable' },
+                            { label: 'Zone report', color: 'green', action: 'zoneReport' },
+                            { label: 'Export all', color: 'green', action: 'exportAll' },
                             { label: 'Add scooter', color: 'green', action: 'addScooter' },
                         ]}
-                        onFilter={applyFilters}
                         onAction={handleAction}
                     />
-
+                    <button onClick={applyFilters} className="apply-filters-button">
+                        Apply Filters
+                    </button>
                     <CustomTable
                         ref={tableRef}
                         columns={[
-                            // { label: 'ID', field: 'id' },
                             { label: 'Created At', field: 'createdAt' },
                             { label: 'Updated At', field: 'updatedAt' },
                             { label: 'Serial Number', field: 'serialNumber' },
+                            { label: 'Longitude', field: 'longitude' },
+                            { label: 'Latitude', field: 'latitude' },
                             { label: 'Battery Health', field: 'batteryHealth' },
                             { label: 'Battery Level', field: 'batteryLevel' },
                             { label: 'Last Maintenance', field: 'lastMaintenance' },
@@ -304,30 +224,26 @@ const ScooterPage = () => {
                             {
                                 label: 'Location',
                                 field: 'location',
-                                render: (row) => row.location?.name || 'N/A', // Access location name and handle any potential null/undefined cases
+                                render: (row) => row.location?.name || 'N/A',
                             },
                             {
                                 label: 'Action',
                                 render: (row) => (
-                                    <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-                                        <button style={{ backgroundColor: '#f5921bd6', width: "100%" }}>View</button>
-                                        <button style={{ backgroundColor: 'green' }} onClick={() => openEditModal(row)}>
+                                    <>
+                                        <button style={{ backgroundColor: 'green' }}>View</button>
+                                        <button style={{ backgroundColor: 'blue' }} onClick={() => openEditModal(row)}>
                                             Edit
                                         </button>
-                                        {/* <button style={{ backgroundColor: 'orange' }}>QR Code</button> */}
-                                    </div>
+                                        <button style={{ backgroundColor: 'orange' }}>QR Code</button>
+                                    </>
                                 ),
                             },
                         ]}
-
                         apiEndpoint={`${baseURL}/scooters`} // Dynamically use baseURL
                         filters={filters}
                     />
                 </div>
-
             </div>
-
-
 
             {isEditModalOpen && (
                 <ScooterEditModal scooter={selectedScooter} onClose={closeEditModal} onUpdate={handleUpdate} />
