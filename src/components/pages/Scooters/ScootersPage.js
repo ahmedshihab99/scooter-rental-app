@@ -17,15 +17,15 @@ const ScooterPage = () => {
     const [latitude, setLatitude] = useState('');
     const [batteryHealth, setBatteryHealth] = useState('');
     const [batteryLevel, setBatteryLevel] = useState('');
-    
-    
+
+
     const [batteryLevelMin, setBatteryLevelMin] = useState('');
     const [batteryLevelMax, setBatteryLevelMax] = useState('');
 
     const [createdAtMin, setCreatedAtMin] = useState('');
     const [createdAtMax, setCreatedAtMax] = useState('');
 
-    
+
     const [lastMaintenance, setLastMaintenance] = useState('');
     const [status, setStatus] = useState('');
     const [location, setLocation] = useState('');
@@ -35,11 +35,11 @@ const ScooterPage = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedScooter, setSelectedScooter] = useState(null);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-    
-    
+
+
     const baseURL = process.env.REACT_APP_API_BASE_URL;
     // console.log("Base URL:", baseURL);
-    
+
     // useRef object for child refrencing functionality
     const tableRef = useRef();
     // Handle Refresh
@@ -51,7 +51,7 @@ const ScooterPage = () => {
         applyFilters(); // Reapply filters after refreshing data
     };
 
-    
+
 
     // Function to open the Add Scooter modal
     const openAddModal = () => setIsAddModalOpen(true);
@@ -83,7 +83,7 @@ const ScooterPage = () => {
         handleRefresh(); // Ensure the table refreshes
     };
 
-   
+
 
     // Apply filters based on state values
     const applyFilters = () => {
@@ -99,53 +99,96 @@ const ScooterPage = () => {
             { field: 'lastMaintenance', value: lastMaintenance },
             { field: 'status', value: status },
             { field: 'location', value: location },
-            { 
+            {
                 field: 'createdAt',
                 type: 'range',
                 rangeType: 'date',
                 value: { min: createdAtMin || null, max: createdAtMax || null },
             },
-            { 
+            {
                 field: 'batteryLevel',
                 type: 'range',
                 rangeType: 'value',
                 value: { min: batteryLevelMin || null, max: batteryLevelMax || null },
             },
         ].filter(Boolean); // Remove any null or undefined filters
-    
+
         setFilters(activeFilters);
     };
-    
+
     // Handle range filter changes directly
-    const handleBatteryLevelRangeChange = (range) => {
-    const min = range.min || '';
-    const max = range.max || '';
-    console.log(`min is ${min} max is ${max}`);
+    /*const handleBatteryLevelRangeChange = (range) => {
+        const min = range.min || '';
+        const max = range.max || '';
+        console.log(`min is ${min} max is ${max}`);
 
-    // Use a callback to update both states simultaneously and then apply filters
-    setBatteryLevelMin(() => {
-        setBatteryLevelMax(() => {
-            applyFilters();
-            return max;
+        // Use a callback to update both states simultaneously and then apply filters
+        setBatteryLevelMin(() => {
+            setBatteryLevelMax(() => {
+                applyFilters();
+                return max;
+            });
+            return min;
         });
-        return min;
-    });
-};
-
-const handleCreatedAtRangeChange = (range) => {
-    const min = range.min ? new Date(range.min).toISOString() : ''; // Convert to ISO format
-    const max = range.max ? new Date(range.max).toISOString() : '';
-    setCreatedAtMin(min);
-    setCreatedAtMax(max);
-};
-
-
-
+    };*/
     
+    /*const handleCreatedAtRangeChange = (range) => {
+        const min = range.min ? new Date(range.min).toISOString() : ''; // Convert to ISO format
+        const max = range.max
+            ? new Date(new Date(range.max).setHours(23, 59, 59, 999)).toISOString()
+            : ''; // Adjust max date to include the entire day
 
+        setCreatedAtMin(() => {
+            setCreatedAtMax(() => {
+                applyFilters();
+                return max;
+            });
+            return min;
+        });
+
+        console.log(`Min is: ${range.min}, Max is: ${range.max}`);
+        console.log(`range type is ${range.rangeType}`)
+    };*/
     
-     // Automatically update filters when filter state changes
-     useEffect(() => {
+    
+    
+    
+    
+    
+    
+    const stateSetters = {
+        batteryLevel: [setBatteryLevelMin, setBatteryLevelMax],
+        createdAt: [setCreatedAtMin, setCreatedAtMax],
+        // Add other fields here
+    };
+    
+    const handleRangeChange = (field, range, type = 'value') => {
+        const min = range.min || '';
+        const max =
+            type === 'date'
+                ? range.max
+                    ? new Date(new Date(range.max).setHours(23, 59, 59, 999)).toISOString()
+                    : ''
+                : range.max || '';
+    
+        const [setMin, setMax] = stateSetters[field] || [];
+    
+        if (setMin && setMax) {
+            setMin(() => {
+                setMax(() => {
+                    applyFilters();
+                    return max;
+                });
+                return min;
+            });
+        } else {
+            console.warn(`No state setters defined for field: ${field}`);
+        }
+    };
+    
+    
+    // Automatically update filters when filter state changes
+    useEffect(() => {
         const activeFilters = [
             { field: 'id', value: id },
             { field: 'serialNumber', value: serialNumber },
@@ -156,7 +199,7 @@ const handleCreatedAtRangeChange = (range) => {
             { field: 'status', value: status },
             { field: 'location', value: location },
         ];
-    
+
         if (batteryLevelMin || batteryLevelMax) {
             activeFilters.push({
                 field: 'batteryLevel',
@@ -165,7 +208,7 @@ const handleCreatedAtRangeChange = (range) => {
                 value: { min: batteryLevelMin || null, max: batteryLevelMax || null },
             });
         }
-    
+
         if (createdAtMin || createdAtMax) {
             activeFilters.push({
                 field: 'createdAt',
@@ -174,11 +217,11 @@ const handleCreatedAtRangeChange = (range) => {
                 value: { min: createdAtMin || null, max: createdAtMax || null },
             });
         }
-    
+
         setFilters(activeFilters.filter(Boolean));
     }, [id, serialNumber, longitude, latitude, batteryHealth, lastMaintenance, status, location, batteryLevelMin, batteryLevelMax, createdAtMin, createdAtMax]);
-    
-    
+
+
 
 
     // Handle different action buttons
@@ -204,8 +247,6 @@ const handleCreatedAtRangeChange = (range) => {
                 break;
         }
     };
-    
-    
 
 
     return (
@@ -243,15 +284,16 @@ const handleCreatedAtRangeChange = (range) => {
                         rangeType: 'value',
                         min: 0,
                         max: 100,
-                        onRangeChange: handleBatteryLevelRangeChange,
+                        onRangeChange: (range) => handleRangeChange('batteryLevel', range),
                     },
                     {
                         label: 'Created At Range',
                         type: 'range',
                         rangeType: 'date',
-                        onRangeChange: handleCreatedAtRangeChange,
+                        onRangeChange: (range) => handleRangeChange('createdAt', range, 'date'),
                     },
                     
+
                 ]}
                 buttons={[
                     { label: 'Update addresses', color: 'green', action: 'updateAddresses' },
@@ -295,7 +337,7 @@ const handleCreatedAtRangeChange = (range) => {
                         ),
                     },
                 ]}
-                
+
                 apiEndpoint={`${baseURL}/scooters`} // Dynamically use baseURL
                 filters={filters}
             />
