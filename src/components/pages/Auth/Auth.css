@@ -1,15 +1,39 @@
+/* Root Variables */
+:root {
+  --background-color: #181818;
+  --container-background-color: #1e1e1e;
+  --text-color: #ffffff;
+  --input-background-color: #001127;
+  --input-border-color: #00214a;
+  --hover-background-color: #001f43;
+  --play-button-background-color: #004fff;
+  --play-button-color: #ffffff;
+  --tag-background-color: #1e1e1e;
+  --tag-hover-background-color: #333333;
+  --primary-color: #004fff;
+  --secondary-color: #0077ff;
+  --card-title-color: #fff;
+  --body-background-color: #000811;
+  --card-container-background-color: #000e1e;
+  --card-container-border-color: #001d46;
+  --card-container-border-hover-color: #194786;
+  --topbar-and-footer-container-background-color: #002652;
+  --side-bar-container-color: #00ddff;
+}
+
+
 .auth-body {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   margin: 0;
-  background-color: #121212;
+  background-color: var(--body-background-color);
   /* Optional background color */
 }
 
 .auth-container {
-  background-color: #1c1c1c;
+  background-color: var(--card-container-border-color);
   color: #e0e0e0;
   padding: 40px;
   border-radius: 10px;
@@ -56,7 +80,7 @@ label {
 .auth-button {
   width: 100%;
   padding: 12px;
-  background-color: #2979ff;
+  background-color: var(--primary-color);
   /* Bright blue */
   color: #ffffff;
   border: none;

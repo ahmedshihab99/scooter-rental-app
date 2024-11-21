@@ -1,48 +1,38 @@
-import axios from "axios";
+import axiosInstance from "./axiosInstance";
+import { jwtDecode } from "jwt-decode";
 
-const API_URL = "/api/auth";
+const API_URL = "/auth"; // Use a relative URL, axiosInstance already has the baseURL
 
 const login = async (email, password) => {
-  try {
-    const response = await axios.post(`${API_URL}/login`, {
-      email,
-      password,
-    });
-    if (response.data.token) {
-      localStorage.setItem("user", JSON.stringify(response.data));
-    }
-    return response.data;
-  } catch (error) {
-    console.error("Error logging in:", error);
-    return null;
+  const response = await axiosInstance.post(`${API_URL}/login`, { email, password });
+  
+  if (response.data.token) {
+    const decodedToken = jwtDecode(response.data.token); // Decode the token
+    console.log(`The following is the Decoded token: ${JSON.stringify(decodedToken)}`);
+    const userDetails = {
+      token: response.data.token,
+      role: decodedToken.role, // Extract the role from the payload
+      email: decodedToken.sub, // Extract the email (sub) from the payload
+    };
+    // Save the token and user details to localStorage
+    localStorage.setItem("user", JSON.stringify(userDetails));
+    return response.data.token;
   }
+
+  throw new Error("Login failed, token not provided");
+};
+
+const getCurrentUser = () => {
+  const userStr = localStorage.getItem("user");
+  return userStr ? JSON.parse(userStr) : null;
 };
 
 const logout = () => {
   localStorage.removeItem("user");
 };
 
-const register = async (email, password) => {
-  try {
-    const response = await axios.post(`${API_URL}/register`, {
-      email,
-      password,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error registering user:", error);
-    return null;
-  }
-};
-
-const getCurrentUser = () => {
-  return JSON.parse(localStorage.getItem("user"));
-};
-
 export default {
   login,
-  logout,
-  register,
   getCurrentUser,
+  logout,
 };
-

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import AuthService from "../../services/AuthService";
-import "./Auth.css";  // Importing CSS
+import "./Login.css";  // Importing CSS
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -10,14 +10,16 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      await AuthService.login(email, password);
-      navigate("/admin");
-    } catch (err) {
-      setError("Invalid email or password");
-    }
-  };
+  e.preventDefault();
+  try {
+    const user = await AuthService.login(email, password);
+    setError("");
+    navigate("/"); // Navigate to the main dashboard
+  } catch (err) {
+    setError("Invalid email or password");
+  }
+};
+
 
   return (
     <div className="auth-body">

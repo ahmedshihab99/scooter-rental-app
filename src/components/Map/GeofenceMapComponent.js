@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polygon, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import GeofenceService from "../services/GeofenceService";
 import pointMarkerImg from "../../assets/pointMarker.png";
 import MapRefocusButton from "./MapRefocusButton";  // Import the refocus button
 
@@ -40,9 +41,10 @@ const GeofenceMapComponent = ({ geofencePoints = [], onPointAdded, onEditPoint, 
 
   // Fetch geofences from API
   const fetchGeofences = async () => {
+    console.log(`GeofenceService.getAllGeofences: ${GeofenceService.getAllGeofences}`);
+
     try {
-      const response = await fetch(API_URL);
-      const data = await response.json();
+      const data = await GeofenceService.getAllGeofences();
       setGeofences(data || []);
       setIsGeofenceAddedOrUpdated(false);
     } catch (error) {

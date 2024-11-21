@@ -2,6 +2,8 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 
 import axios from 'axios';
+import axiosInstance from "../services/axiosInstance";
+
 
 const CustomTable = forwardRef(({ columns, apiEndpoint, filters, sumFields = null }, ref) => {
     const [data, setData] = useState([]);
@@ -9,7 +11,7 @@ const CustomTable = forwardRef(({ columns, apiEndpoint, filters, sumFields = nul
 
     useEffect(() => {
         // Initial data fetch
-        axios.get(apiEndpoint)
+        axiosInstance.get(apiEndpoint)
             .then(response => {
                 setData(response.data);
                 setFilteredData(response.data);

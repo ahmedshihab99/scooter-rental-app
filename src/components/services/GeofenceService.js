@@ -1,15 +1,16 @@
 // File: ../../services/GeofenceService.js
 
 import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 const baseURL = process.env.REACT_APP_API_BASE_URL;
-const API_URL = `${baseURL}/geofences`;
+const API_URL = `${baseURL}/admin/geofences`;
 
 const GeofenceService = {
   // Fetch geofence data from the backend
   getAllGeofences: async () => {
     try {
-      const response = await axios.get(API_URL);
+      const response = await axiosInstance.get(API_URL);
       return response.data;
     } catch (error) {
       console.error('Error fetching geofence data:', error);
@@ -20,7 +21,7 @@ const GeofenceService = {
   // Add a new geofence to the backend
   addGeofence: async (geofence) => {
     try {
-      const response = await axios.post(API_URL, geofence);
+      const response = await axiosInstance.post(API_URL, geofence);
       return response.data;
     } catch (error) {
       console.error('Error adding geofence:', error);
@@ -32,7 +33,7 @@ const GeofenceService = {
   updateGeofence: async (id, geofence) => {
     try {
       console.log(`geofence's geoType is ${geofence.geofenceType}`);
-      const response = await axios.put(`${API_URL}/${id}`, geofence);
+      const response = await axiosInstance.put(`${API_URL}/${id}`, geofence);
       return response.data;
     } catch (error) {
       console.error('Error updating geofence:', error);
@@ -43,7 +44,7 @@ const GeofenceService = {
   // Delete existing geofence data on the backend
   deleteGeofence: async (id) => {
     try {
-      const response = await axios.delete(`${API_URL}/${id}`);
+      const response = await axiosInstance.delete(`${API_URL}/${id}`);
       return response.data;
     } catch (error) {
       console.error('Error deleting geofence:', error);

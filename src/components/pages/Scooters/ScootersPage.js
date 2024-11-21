@@ -4,6 +4,7 @@ import CustomTable from '../../reusableComponents/CustomTable'; // Ensure this p
 import ScooterEditModal from './components/ScooterEditModal'; // Corrected the path
 import AddScooterModal from './components/AddScooterModal'; // Corrected the path
 
+
 import './ScootersPage.css';
 
 
@@ -314,7 +315,7 @@ const ScooterPage = () => {
                             },
                         ]}
 
-                        apiEndpoint={`${baseURL}/scooters`} // Dynamically use baseURL
+                        apiEndpoint={`/admin/scooters`} // Dynamically use baseURL
                         filters={filters}
                     />
                 </div>

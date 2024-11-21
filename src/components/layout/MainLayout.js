@@ -4,10 +4,12 @@ import '../styles/MainLayout.css';
 import MenuItemWithSub from '../reusableComponents/MenuItemWithSub';
 import * as FaIcons from 'react-icons/fa';
 import { LanguageContext } from '../reusableComponents/locales/LanguageContext';
+import AuthService from '../services/AuthService';
 import ClipLoader from "react-spinners/ClipLoader"; // Import the spinner
 
 
-const MainLayout = ({ user }) => {
+const MainLayout = () => {
+  // console.log(`This user is ${user.role}`)
   const { t, switchLanguage } = useContext(LanguageContext); // Access translate function from LanguageContext
   const [isCollapsed, setIsCollapsed] = useState(false); // State for sidebar collapse
   const [subMenuOpen, setSubMenuOpen] = useState({}); // State for sub-menu toggle
@@ -39,13 +41,22 @@ const MainLayout = ({ user }) => {
 
     // Attach the event listener
     document.addEventListener("mousedown", handleClickOutside);
-    
+
     // Cleanup event listener on component unmount
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
+  
+  
+  
+  const [user, setUser] = useState(null); // Initialize user state
+  
+  useEffect(() => {
+    const currentUser = AuthService.getCurrentUser();
+    setUser(currentUser); // Set the user data from AuthService
+  }, []);
+  
   if (!user) {
     return (
       <div className="loading-spinner">
@@ -53,7 +64,11 @@ const MainLayout = ({ user }) => {
       </div>
     );
   }
+
   
+
+  
+
 
   return (
     <div className={`layout ${isCollapsed ? 'collapsed' : ''}`}>
@@ -63,20 +78,18 @@ const MainLayout = ({ user }) => {
           <img src="/images/techurity-logo.jpg" alt="Company Logo" className="company-logo" />
         </div>
         <ul className='sidebar-menu-items'>
-          {/* Admin */}
-          <li>
-            <MenuItemWithSub
-              label={t["dashboard"]}
-              icon={FaIcons.FaTachometerAlt}
-              path="/dashboard"
-              subItems={[
-                { label: t["scooter_activities"], path: '/dashboard/scooter-activities', icon: FaIcons.FaWrench },
-                { label: t["statistics"], path: '/dashboard/statistics', icon: FaIcons.FaChartBar },
-                { label: t["active_scooters"], path: '/dashboard/active-scooters', icon: FaIcons.FaMotorcycle },
-              ]}
-              isCollapsed={isCollapsed}
-            />
-          </li>
+          {/* Display only if the user is an admin */}
+          {user?.role === "ADMIN" && (
+            <li>
+              <MenuItemWithSub
+                label= {t["dashboard"]}
+                icon={FaIcons.FaTachometerAlt}
+                path="/dashboard"
+                subItems={[{ label: "Statistics", path: "/admin/statistics" }]}
+                isCollapsed={isCollapsed}
+              />
+            </li>
+          )}
           {/* Other menu items */}
           <li>
             <MenuItemWithSub
@@ -93,34 +106,34 @@ const MainLayout = ({ user }) => {
               isCollapsed={isCollapsed}
             />
           </li>
-          
+
           <li>
             <MenuItemWithSub
               label={t["geofence"]}
-              icon={FaIcons.FaDrawPolygon }
+              icon={FaIcons.FaDrawPolygon}
               path="/geofence"
               subItems={[
-                
+
               ]}
               isCollapsed={isCollapsed}
             />
           </li>
-          
+
           <li>
             <MenuItemWithSub
               label={t["customers"]}
               icon={FaIcons.FaUserFriends}
               path="/customers"
               subItems={[
-                { label: "Registery Page", path: 'customers/customers_registery_page', icon: FaIcons.FaClipboardList  },
+                { label: "Registery Page", path: 'customers/customers_registery_page', icon: FaIcons.FaClipboardList },
                 // { label: t["heat_map"], path: '/maps/heat-map', icon: FaIcons.FaFire },
-               
+
               ]}
               isCollapsed={isCollapsed}
             />
           </li>
-          
-          
+
+
           <li>
             <MenuItemWithSub
               label={t["finance"]}
@@ -135,7 +148,7 @@ const MainLayout = ({ user }) => {
               isCollapsed={isCollapsed}
             />
           </li>
-  
+
           {/* <li>
             <MenuItemWithSub
               label={t["marketing"]}
@@ -152,11 +165,11 @@ const MainLayout = ({ user }) => {
               isCollapsed={isCollapsed}
             />
           </li> */}
-  
-          
-  
-          
-  
+
+
+
+
+
           <li>
             <MenuItemWithSub
               label={t["human_resources"] || "HR"}
@@ -170,7 +183,7 @@ const MainLayout = ({ user }) => {
               isCollapsed={isCollapsed}
             />
           </li>
-  
+
           <li>
             <MenuItemWithSub
               label={t["rent"]}
@@ -184,7 +197,7 @@ const MainLayout = ({ user }) => {
               isCollapsed={isCollapsed}
             />
           </li>
-  
+
           <li>
             <MenuItemWithSub
               label={t["warehouse"]}
@@ -211,8 +224,8 @@ const MainLayout = ({ user }) => {
             {/* Add more options as needed */}
           </select>
           <div className="user-info" onClick={toggleDropdown}>
-          <img src={user.icon || "/images/default-user.png"} alt="User Icon" className="user-icon" />
-            <span className="username">{user.firstName}</span>
+            <img src={user?.icon || "/images/default-user.png"} alt="User Icon" className="user-icon" />
+            <span className="username">{user?.firstName}</span>
           </div>
 
           {/* User dropdown menu */}

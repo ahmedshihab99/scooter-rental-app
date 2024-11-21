@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Polygon, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import GeofenceService from "../services/GeofenceService";
 import ScooterService from "../services/ScooterService";
 import scooterIconImg from "../../assets/scooter-icon.png";
 import MapRefocusButton from "./MapRefocusButton";  // Import the refocus button
@@ -46,13 +47,15 @@ const MapComponent = () => {
   useEffect(() => {
     const fetchGeofences = async () => {
       try {
-        const response = await fetch(API_URL);
-        const data = await response.json();
-        setGeofences(data || []);
+        const data = await GeofenceService.getAllGeofences();
+        console.log("Fetched geofences:", data); // Log the response
+        setGeofences(data || []); // Ensure data is an array or set as an empty array
       } catch (error) {
         console.error("Error fetching geofences:", error);
+        setGeofences([]); // Fallback to empty array on error
       }
     };
+    
 
     fetchGeofences();
   }, []);

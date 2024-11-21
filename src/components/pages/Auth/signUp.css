@@ -1,3 +1,26 @@
+/* Root Variables */
+:root {
+    --background-color: #181818;
+    --container-background-color: #1e1e1e;
+    --text-color: #ffffff;
+    --input-background-color: #001127;
+    --input-border-color: #00214a;
+    --hover-background-color: #001f43;
+    --play-button-background-color: #004fff;
+    --play-button-color: #ffffff;
+    --tag-background-color: #1e1e1e;
+    --tag-hover-background-color: #333333;
+    --primary-color: #004fff;
+    --secondary-color: #0077ff;
+    --card-title-color: #fff;
+    --body-background-color: #000811;
+    --card-container-background-color: #000e1e;
+    --card-container-border-color: #001d46;
+    --card-container-border-hover-color: #194786;
+    --topbar-and-footer-container-background-color: #002652;
+    --side-bar-container-color: #00ddff;
+}
+
 /* General Layout and Background */
 .sign-up-body {
     display: flex;
@@ -5,86 +28,77 @@
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-color: #181818;
-    color: #e0e0e0;
+    background-color: var(--body-background-color);
+    color: var(--text-color);
     font-family: Arial, sans-serif;
-  }
-  
-  /* Main Container */
-  .sign-up-container {
+}
+
+/* Main Container */
+.sign-up-container {
     display: flex;
     flex-direction: column;
-    background-color: #2a2a2a;
-    padding: 10px 40px;
+    background-color: var(--card-container-border-color);
+    padding: 20px 40px;
     border-radius: 15px;
     max-width: 700px;
     width: 90%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    
-  }
-  
-  /* Header */
-  .sign-up-container h2 {
+}
+
+/* Header */
+.sign-up-container h2 {
     font-size: 2rem;
-    color: #ffffff;
+    color: var(--text-color);
     text-align: center;
     margin-bottom: 20px;
-  }
-  
-  /* Form Layout */
-  .sign-up-form {
+}
+
+/* Form Layout */
+.sign-up-form {
     display: flex;
     gap: 30px;
-  }
-  
-  /* Form Columns */
-  .col {
+}
+
+/* Form Columns */
+.col {
     display: flex;
     flex-direction: column;
     gap: 10px;
     flex: 1;
-  }
-  
-  /* Labels */
-  .form-group label {
+}
+
+/* Labels */
+.form-group label {
     font-size: 1rem;
-    color: #b0b0b0;
+    color: var(--text-color);
     font-weight: 600;
-  }
-  
-  /* Input Fields */
-  .input-field,
-  .file-input {
+}
+
+/* Input Fields */
+.input-field,
+.file-input {
     width: 100%;
     padding: 12px;
     border-radius: 8px;
-    border: 1px solid #333;
-    background-color: #ffffff;
-    color: #333;
+    border: 1px solid var(--input-border-color);
+    background-color: var(--input-background-color);
+    color: var(--text-color);
     font-size: 1rem;
     transition: border-color 0.3s ease;
-  }
-  
- .sign-up-form input[type="text"], input[type="email"], input[type="password"], input[type="file"], textarea {
-    width: 100%;
-    padding: 10px;
-    margin: 0;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
 }
-  
-  .input-field:focus,
-  .file-input:focus {
-    border-color: #2979ff;
+
+.input-field:focus,
+.file-input:focus {
+    border-color: var(--primary-color);
     outline: none;
-  }
-  
-  /* Button */
-  .sign-up-button {
+}
+
+/* Button */
+.sign-up-button {
     width: 100%;
     padding: 14px;
-    background-color: #2979ff;
-    color: #ffffff;
+    background-color: var(--primary-color);
+    color: var(--play-button-color);
     border: none;
     border-radius: 8px;
     font-size: 1rem;
@@ -92,27 +106,27 @@
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
     text-align: center;
-  }
-  
-  .sign-up-button:hover {
-    background-color: #1e88e5;
+}
+
+.sign-up-button:hover {
+    background-color: var(--secondary-color);
     transform: scale(1.02);
-  }
-  
-  .sign-up-button:active {
+}
+
+.sign-up-button:active {
     transform: scale(0.98);
-  }
-  
-  /* Error Message */
-  .error-message {
+}
+
+/* Error Message */
+.error-message {
     color: #ff3e3e;
     font-size: 0.9rem;
     text-align: center;
     margin-top: 10px;
-  }
-  
-  /* OTP Modal */
-  .otp-modal {
+}
+
+/* OTP Modal */
+.otp-modal {
     position: fixed;
     top: 0;
     left: 0;
@@ -123,40 +137,35 @@
     align-items: center;
     background: rgba(0, 0, 0, 0.6);
     z-index: 1000;
-  }
-  
-  .otp-container {
-    background-color: #2a2a2a;
+}
+
+.otp-container {
+    background-color: var(--container-background-color);
     padding: 30px;
     border-radius: 10px;
     text-align: center;
     width: 300px;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
-  }
-  
-  
-  /* Link Styling */
-  .signup-link {
+}
+
+/* Link Styling */
+.signup-link {
     margin-top: 15px;
     font-size: 0.85rem;
-    color: #2979ff;
+    color: var(--primary-color);
     text-align: center;
     display: block;
     text-decoration: none;
-  }
-  
-  .signup-link:hover {
+}
+
+.signup-link:hover {
     text-decoration: underline;
-  }
-  
-  /* Responsive Adjustments */
-  @media (max-width: 768px) {
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
     .sign-up-form {
-      flex-direction: column;
-      gap: 15px;
+        flex-direction: column;
+        gap: 15px;
     }
-    
-    .sign-up-container {
-    }
-  }
-  
+}

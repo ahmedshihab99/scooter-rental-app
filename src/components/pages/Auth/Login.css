@@ -1,0 +1,109 @@
+/* Root Variables */
+:root {
+    --background-color: #181818;
+    --container-background-color: #1e1e1e;
+    --text-color: #ffffff;
+    --input-background-color: #001127;
+    --input-border-color: #00214a;
+    --hover-background-color: #001f43;
+    --play-button-background-color: #004fff;
+    --play-button-color: #ffffff;
+    --tag-background-color: #1e1e1e;
+    --tag-hover-background-color: #333333;
+    --primary-color: #004fff;
+    --secondary-color: #0077ff;
+    --card-title-color: #fff;
+    --body-background-color: #000811;
+    --card-container-background-color: #000e1e;
+    --card-container-border-color: #001d46;
+    --card-container-border-hover-color: #194786;
+    --topbar-and-footer-container-background-color: #002652;
+    --side-bar-container-color: #00ddff;
+  }
+  
+  
+  .auth-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--body-background-color);
+    /* Optional background color */
+  }
+  
+  .auth-container {
+    background-color: var(--card-container-border-color);
+    color: #e0e0e0;
+    padding: 40px;
+    border-radius: 10px;
+    /* box-shadow: 0 1px 15px rgba(0, 0, 0, 0.2); */
+    width: 450px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .auth-container h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #ffffff;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }   
+  
+  label {
+    font-size: 1.1rem;
+    color: #ffffff;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 8px;
+    border: none;
+    background-color: #ffffff;
+    color: #3c3c3c;
+    font-size: 1rem;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .input-field:focus {
+    outline: none;
+    border: 1px solid #2979ff;
+    /* Accent color */
+  }
+  
+  .auth-button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--primary-color);
+    /* Bright blue */
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .auth-button:hover {
+    background-color: #1e88e5;
+    /* Lighter blue */
+  }
+  
+  .error {
+    color: #ff7043;
+    /* Red/orange for error messages */
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+  }
+  
+  
+  
+  .signup-link{
+    padding-top: dvh;
+  }

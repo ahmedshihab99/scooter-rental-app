@@ -26,7 +26,8 @@
 } */
 
 .dashboard{
-    padding: 20px;    
+    padding: 20px;
+    padding-bottom: 0;   
 }
 
 .dashboard h2 {

@@ -1,7 +1,7 @@
 // App.js
 import React, { useState, useEffect, Suspense } from "react";
 import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import  "./components/pages/Profile/Profile";
+import "./components/pages/Profile/Profile";
 import DashboardPage from "./components/pages/Dashboard/DashboardPage";
 import UserMapPage from "./components/pages/UserMap/UserMapPage";
 import StatisticsPage from "./components/pages/Statistics/StatisticsPage";
@@ -17,25 +17,30 @@ import "./styles/global.css";
 import { LanguageProvider } from "./components/reusableComponents/locales/LanguageContext";
 import ClipLoader from "react-spinners/ClipLoader"; // Import the spinner
 import User from "./components/Models/User";  // Import the User model
+import AuthService from "./components/services/AuthService"
 
 
 const Profile = React.lazy(() => import("./components/pages/Profile/Profile"));
 
 function App() {
-  
-  
-  const [user, setUser] = useState(null);
-  
-  const ProtectedRoute = ({ user, children }) => {
-    if (user === null) return (
-      <div className="loading-spinner">
-        <ClipLoader color="#3498db" loading={!user} size={90} />
-      </div> // Handle loading state
-    );
-    if (!user) return <Navigate to="/login" />;
+
+
+  const [user, setUser] = useState(AuthService.getCurrentUser());
+  useEffect(() => {
+    const currentUser = AuthService.getCurrentUser();
+    setUser(currentUser);
+  }, []);
+
+
+
+  const ProtectedRoute = ({ children }) => {
+    if (!user || !user.token) {
+      return <Navigate to="/login" />;
+    }
     return children;
   };
   
+
 
   useEffect(() => {
     // Simulating a fetch call to an API endpoint
@@ -65,7 +70,7 @@ function App() {
 
           {/* Protected routes inside the MainLayout */}
           <Route path="/" element={<MainLayout user={user} />}>
-          {/* <Route path="/" element={<ProtectedRoute user={user}><MainLayout user={user} /></ProtectedRoute>}> */}
+            {/* <Route path="/" element={<ProtectedRoute user={user}><MainLayout user={user} /></ProtectedRoute>}> */}
             <Route index element={<Navigate to="/maps" />} /> {/* Default page */}
             <Route
               path="/profile"
