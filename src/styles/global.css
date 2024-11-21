@@ -30,7 +30,7 @@
 /* Set body styles */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa; /* Light background color */
+    background-color: var(--body-background-color); /* Light background color */
     color: #343a40; /* Dark text color */
     line-height: 1.6; /* Increase line height for readability */
 }
@@ -73,7 +73,7 @@ input[type="password"],
 textarea {
     width: 100%; /* Full width */
     padding: 10px;
-    margin: 10px 0;
+    margin: 3px 0;
     border: 1px solid var(--input-border-color); /* Light gray border */
     border-radius: 4px; /* Rounded corners */
     background-color: var(--input-background-color);
@@ -82,7 +82,7 @@ textarea {
 
 /* Styles for headers */
 h1, h2, h3, h4, h5, h6 {
-    color: #343a40; /* Dark color for headers */
+    color: #fff; /* Dark color for headers */
     margin-bottom: 15px;
 }
 

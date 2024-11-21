@@ -16,6 +16,7 @@
   --card-container-background-color: #000e1e;
   --topbar-and-footer-container-background-color: #002652;
   --side-bar-container-color: #001329;
+  --side-bar-item-hover-color:#002d71;
 }
 
 /* MainLayout.css */
@@ -83,7 +84,7 @@
 }
 
 .sub-menu-link:hover {
-  background-color: #4e44ce;
+  background-color: var(--side-bar-item-hover-color);
 }
 
 .sub-menu-icon {
@@ -92,11 +93,42 @@
   color: white;
 }
 
+ul.sidebar-menu-items {
+  height: 85vh;
+  overflow-y: auto;
+}
+
 /* Removes underline from all sidebar links */
 .sidebar ul li a {
   text-decoration: none;
   color: inherit;
 }
+
+ul.sidebar-menu-items {
+    height: 85vh;
+    overflow-y: auto;
+}
+
+/* Custom scrollbar styling for modern browsers */
+.sidebar::-webkit-scrollbar {
+    width: 6px; /* Narrow scrollbar */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: var(--text-color); /* Color for the scrollbar thumb */
+    border-radius: 10px; /* Rounded edges for the thumb */
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background-color: transparent; /* Transparent track */
+}
+
+/* Styling for Firefox (optional) */
+.sidebar {
+    scrollbar-color: var(--topbar-and-footer-container-background-color) transparent; /* Thumb and track color */
+    scrollbar-width: thin; /* Thin scrollbar */
+}
+
 
 .sidebar ul {
   list-style-type: none;
@@ -133,7 +165,7 @@
 
 
 .menu-item-with-sub:hover{
-  background-color: #4e44ce;
+  background-color: var(--side-bar-item-hover-color);
   
 }
 

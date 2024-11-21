@@ -206,9 +206,6 @@ const ScooterPage = () => {
     ]);
 
 
-
-
-
     // Handle different action buttons
     const handleAction = (action) => {
         switch (action) {
@@ -239,17 +236,14 @@ const ScooterPage = () => {
 
             <div style={{ display: "flex", flexDirection: "column" }}>
                 <h2>Scooters</h2>
-                <div style={{ display: "flex", flexDirection: "row", maxHeight: "80vh", gap: "20px" }}>
+                <div className='form-and-table-container'>
                     <FilterForm
                         fields={[
-                            { label: 'ID', placeholder: 'Filter by ID', onChange: setId },
-                            { label: 'Created At', type: 'date', onChange: setCreatedAt },
+                            // { label: 'Created At', type: 'date', onChange: setCreatedAt },
                             { label: 'Updated At', type: 'date', onChange: setUpdatedAt },
                             { label: 'Serial Number', placeholder: 'Filter by Serial Number', onChange: setSerialNumber },
-                            { label: 'Longitude', placeholder: 'Filter by Longitude', onChange: setLongitude },
-                            { label: 'Latitude', placeholder: 'Filter by Latitude', onChange: setLatitude },
                             { label: 'Battery Health', placeholder: 'Battery Health', onChange: setBatteryHealth },
-                            { label: 'Battery Level', placeholder: 'Battery Level', onChange: setBatteryLevel },
+                            // { label: 'Battery Level', placeholder: 'Battery Level', onChange: setBatteryLevel },
                             { label: 'Last Maintenance', type: 'date', onChange: setLastMaintenance },
                             {
                                 label: 'Status',
@@ -310,8 +304,8 @@ const ScooterPage = () => {
                                 label: 'Action',
                                 render: (row) => (
                                     <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-                                        <button style={{ backgroundColor: '#f5921bd6', width: "100%" }}>View</button>
-                                        <button style={{ backgroundColor: 'green' }} onClick={() => openEditModal(row)}>
+                                        <button style={{ backgroundColor: '#024CAA', width: "100%" }}>View</button>
+                                        <button style={{ backgroundColor: '#23006e' }} onClick={() => openEditModal(row)}>
                                             Edit
                                         </button>
                                         {/* <button style={{ backgroundColor: 'orange' }}>QR Code</button> */}

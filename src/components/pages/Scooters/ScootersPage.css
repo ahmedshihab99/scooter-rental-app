@@ -16,6 +16,10 @@
     --card-container-background-color: #000e1e;
     --topbar-and-footer-container-background-color: #002652;
     --side-bar-container-color: #001329;
+    --filter-form-background-color: #00214a;
+    --modal-background-color: #17004a;
+    --modal-input-background-color:#17004a;
+    --modal-input-border-color:#4400d6;
 }
 
 .scooter-page {
@@ -34,21 +38,50 @@
     color: var(--card-title-color);
 }
 
+.form-and-table-container{
+    display: flex;
+    max-height: 80vh;
+    gap: 10px
+}
+
 .scooter-page .filter-form,
 .scooter-page .custom-table {
     margin-bottom: 20px;
+    scrollbar-color: var(--topbar-and-footer-container-background-color) transparent; /* Thumb and track color */
+    scrollbar-width: thin; /* Thin scrollbar */
 }
 
 .scooter-page .filter-form {
     display: flex;
     flex-direction: column;
     height: 80vh;
+    width: 400px;
     overflow: auto;
     padding: 20px;
-    background-color: var(--input-border-color);
+    background-color: var(--filter-form-background-color);
     color: var(--text-color);
     border-radius: 10px;
+    
+    scrollbar-color: var(--input-background-color) transparent; /* Thumb and track color */
+    scrollbar-width: thin; /* Thin scrollbar */
 }
+
+.scooter-page .filter-form-range {
+        display: flex;
+        justify-content: space-between;
+        /* overflow-x: scroll; */
+        /* width: 40px; */
+}
+
+.scooter-page .filter-form-range label {
+    align-self: center;
+    width: 80px;
+    margin-right: 5px;
+    /* overflow-x: scroll; */
+    /* width: 40px; */
+}
+
+
 
 .filter-fields,
 .filter-checkboxes,
@@ -61,37 +94,23 @@
 .filter-form-input-element {
     display: flex;
     flex-direction: column;
+    margin-bottom: 0.7rem;
+    
 }
 
-input[type="date"], input[type="number"] {
+.scooter-page [type="date"], .scooter-page input[type="number"], .scooter-page select {
     width: 100%;
     padding: 10px;
-    margin: 10px 0;
+    margin: 3px 0;
     border: 1px solid var(--input-border-color);
     background-color: var(--input-background-color);
     color: var(--text-color);
     border-radius: 4px;
 }
 
-.filter-form-input-element select {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid var(--input-border-color);
-    background-color: var(--input-background-color);
-    color: var(--text-color);
-    border-radius: 4px;
-}
 
-.modal-content select {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid var(--input-border-color);
-    background-color: var(--input-background-color);
-    color: var(--text-color);
-    border-radius: 4px;
-}
+
+
 
 .filter-form label {
     color: var(--text-color);
@@ -170,5 +189,23 @@ input[type="date"], input[type="number"] {
 
 .action-buttons {
     display: flex;
-    gap: 2%;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 20px;
+}
+
+.modal-content{
+    background-color: var(--modal-background-color);
+    border: 1px solid var(--modal-input-border-color); ;
+}
+
+
+.modal-content [type="date"], .modal-content [type="text"], .modal-content select {
+    width: 100%;
+    padding: 10px;
+    margin: 3px 0;
+    border: 1px solid var(--modal-input-border-color);
+    background-color: var(--modal-input-background-color);
+    color: var(--text-color);
+    border-radius: 4px;
 }

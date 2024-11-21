@@ -72,7 +72,7 @@ const AddScooterModal = ({ onClose, onAdd }) => {
                         value={formData.serialNumber}
                         onChange={handleChange}
                     />
-                    <input
+                    {/* <input
                         type="text"
                         name="longitude"
                         placeholder="Longitude"
@@ -85,7 +85,7 @@ const AddScooterModal = ({ onClose, onAdd }) => {
                         placeholder="Latitude"
                         value={formData.latitude}
                         onChange={handleChange}
-                    />
+                    /> */}
                     <input
                         type="text"
                         name="batteryHealth"

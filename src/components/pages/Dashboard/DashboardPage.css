@@ -96,6 +96,34 @@
     color: #555;
 }
 
+ .filter-form-input-element select {
+    width: 100%;
+    padding: 10px;
+    margin: 3px 0;
+    border: 1px solid var(--input-border-color);
+    background-color: var(--input-background-color);
+    color: var(--text-color);
+    border-radius: 4px;
+}
+
+.dashboard .custom-table {
+    height: 50%;
+    overflow-y: auto; /* Use "auto" to ensure the scrollbar only appears when needed */
+}
+
+
+
+.dashboard .custom-table::-webkit-scrollbar-track {
+    background-color: transparent; /* Transparent track */
+}
+
+/* Styling for Firefox ===Ahmed The one creates styling*/
+.dashboard .custom-table {
+    scrollbar-color: var(--topbar-and-footer-container-background-color) transparent; /* Thumb and track color */
+    scrollbar-width: thin; /* Thin scrollbar */
+}
+
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .card {

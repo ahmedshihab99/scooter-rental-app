@@ -1,3 +1,28 @@
+:root {
+  --background-color: #181818;
+  --container-background-color: #1e1e1e;
+  --text-color: #ffffff;
+  --input-background-color: #001127;
+  --input-border-color: #00214a;
+  --hover-background-color: #001f43;
+  --play-button-background-color: #004fff;
+  --play-button-color: #ffffff;
+  --tag-background-color: #1e1e1e;
+  --tag-hover-background-color: #333333;
+  --primary-color: #004fff;
+  --secondary-color: #0077ff;
+  --card-title-color: #fff;
+  --body-background-color: #000811;
+  --card-container-background-color: #000e1e;
+  --topbar-and-footer-container-background-color: #002652;
+  --side-bar-container-color: #001329;
+  --filter-form-background-color: #00214a;
+  --modal-background-color: #17004a;
+  --modal-input-background-color:#17004a;
+  --modal-input-border-color:#4400d6;
+  --control-geofence-background-color: #001329;
+}
+
 .geofencing-page-main {
   padding: 0;
 }
@@ -8,7 +33,7 @@
 
 .geofence-control{
   padding: 15px;
-  background-color: #1f1f1f;
+  background-color: var(--control-geofence-background-color);
   width: 25%;
 }
 

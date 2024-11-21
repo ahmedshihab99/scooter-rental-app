@@ -78,11 +78,9 @@ const ScooterEditModal = ({ scooter, onClose, onUpdate }) => {
                 <h3>Edit Scooter</h3>
                 <form>
                     <label>ID: {formData.id}</label>
-                    <input type="text" name="createdAt" value={formData.createdAt} onChange={handleChange} placeholder="Created At" />
-                    <input type="text" name="updatedAt" value={formData.updatedAt} onChange={handleChange} placeholder="Updated At" />
                     <input type="text" name="serialNumber" value={formData.serialNumber} onChange={handleChange} placeholder="Serial Number" />
-                    <input type="text" name="longitude" value={formData.longitude} onChange={handleChange} placeholder="Longitude" />
-                    <input type="text" name="latitude" value={formData.latitude} onChange={handleChange} placeholder="Latitude" />
+                    {/* <input type="text" name="longitude" value={formData.longitude} onChange={handleChange} placeholder="Longitude" />
+                    <input type="text" name="latitude" value={formData.latitude} onChange={handleChange} placeholder="Latitude" /> */}
                     <input type="text" name="batteryHealth" value={formData.batteryHealth} onChange={handleChange} placeholder="Battery Health" />
                     <input type="text" name="batteryLevel" value={formData.batteryLevel} onChange={handleChange} placeholder="Battery Level" />
                     <input type="text" name="lastMaintenance" value={formData.lastMaintenance} onChange={handleChange} placeholder="Last Maintenance" />
