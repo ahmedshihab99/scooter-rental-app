@@ -4,6 +4,7 @@ import FilterForm from '../../reusableComponents/FilterForm';
 import axios from 'axios';
 
 const baseURL = process.env.REACT_APP_API_BASE_URL;
+// const baseURL = "http://localhost:8900"
 
 const TotalAvailableScooters = () => {
     const [locationFilter, setLocationFilter] = useState('');

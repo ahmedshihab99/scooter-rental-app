@@ -6,35 +6,52 @@ import "./signUp.css";
 const SignUp = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [licenseNumber, setLicenseNumber] = useState("");
+  const [idNumber, setIdNumber] = useState("");
+  const [idFrontScan, setIdFrontScan] = useState(null);
+  const [idBackScan, setIdBackScan] = useState(null);
+  const [licenseScan, setLicenseScan] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-
     if (password !== confirmPassword) {
       setError("Passwords do not match");
       return;
     }
-
-    const role = "USER";
-    
     try {
       await AuthService.signUp({
         firstName,
         lastName,
+        phoneNumber,
+        licenseNumber,
+        idNumber,
+        idFrontScan,
+        idBackScan,
+        licenseScan,
         email,
         password,
-        role
       });
+      setOtpSent(true);
+    } catch (err) {
+      setError("Error signing up");
+    }
+  };
 
-      // Navigate to login after successful signup
+  const handleOtpVerification = async (e) => {
+    e.preventDefault();
+    try {
+      await AuthService.verifyOtp(email, otp);
       navigate("/login");
     } catch (err) {
-      setError("Error signing up. Please try again.");
+      setError("Invalid OTP");
     }
   };
 
@@ -63,6 +80,46 @@ const SignUp = () => {
                 onChange={(e) => setLastName(e.target.value)}
                 required
                 className="input-field"
+              />
+            </div>
+            <div className="form-group">
+              <label>Phone Number</label>
+              <input
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                required
+                className="input-field"
+              />
+            </div>
+            <div className="form-group">
+              <label>License Number (Optional)</label>
+              <input
+                type="text"
+                value={licenseNumber}
+                onChange={(e) => setLicenseNumber(e.target.value)}
+                className="input-field"
+              />
+            </div>
+          </div>
+
+          <div className="col">
+            <div className="form-group">
+              <label>ID Scan (Front)</label>
+              <input
+                type="file"
+                onChange={(e) => setIdFrontScan(e.target.files[0])}
+                required
+                className="file-input"
+              />
+            </div>
+            <div className="form-group">
+              <label>ID Scan (Back)</label>
+              <input
+                type="file"
+                onChange={(e) => setIdBackScan(e.target.files[0])}
+                required
+                className="file-input"
               />
             </div>
             <div className="form-group">
@@ -96,14 +153,37 @@ const SignUp = () => {
               />
             </div>
           </div>
-          <button type="submit" className="sign-up-button">
-            Sign Up
-          </button>
         </form>
+        <button type="submit" className="sign-up-button">
+          Sign Up
+        </button>
         <p className="signup-link">
           Already have an account? <Link to="/login">Login</Link>
         </p>
       </div>
+
+      {otpSent && (
+        <div className="otp-modal">
+          <div className="otp-container">
+            <h3>Enter OTP</h3>
+            <form onSubmit={handleOtpVerification}>
+              <div className="form-group">
+                <label>OTP Code</label>
+                <input
+                  type="text"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                  required
+                  className="input-field"
+                />
+              </div>
+              <button type="submit" className="sign-up-button">
+                Verify OTP
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

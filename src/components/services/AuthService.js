@@ -3,6 +3,13 @@ import { jwtDecode } from "jwt-decode";
 
 const API_URL = "/auth"; // Use a relative URL, axiosInstance already has the baseURL
 
+// Sign-up function
+const signUp = async (userData) => {
+  const response = await axiosInstance.post(`${API_URL}/register`, userData);
+  return response.data;
+};
+
+
 const login = async (email, password) => {
   const response = await axiosInstance.post(`${API_URL}/login`, { email, password });
   
@@ -32,6 +39,7 @@ const logout = () => {
 };
 
 export default {
+  signUp,
   login,
   getCurrentUser,
   logout,

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import axiosInstance from '../../../services/axiosInstance';
 import './ScooterEditModal.css';
 
 const baseURL = process.env.REACT_APP_API_BASE_URL;
-const API_URL = `${baseURL}/scooters`;
+const API_URL = `${baseURL}/admin/scooters`;
 
 const ScooterEditModal = ({ scooter, onClose, onUpdate }) => {
     // Initialize local state with current scooter details
@@ -37,11 +38,13 @@ const ScooterEditModal = ({ scooter, onClose, onUpdate }) => {
     const handleUpdate = async () => {
         console.log(`scooter data is ${JSON.stringify(formData)}`);
         try {
-            const response = await fetch(`${API_URL}/${scooter.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
+            // const response = await fetch(`${API_URL}/${scooter.id}`, {
+            //     method: 'PUT',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(formData),
+            // });
+            
+            const response = await axiosInstance.put(`${API_URL}/${scooter.id}`, formData);
 
             if (response.ok) {
                 onUpdate(); // Refresh the table or pass any update callback
@@ -57,9 +60,12 @@ const ScooterEditModal = ({ scooter, onClose, onUpdate }) => {
     // Handle the delete action
     const handleDelete = async () => {
         try {
-            const response = await fetch(`${API_URL}/${scooter.id}`, {
-                method: 'DELETE',
-            });
+            // const response = await fetch(`${API_URL}/${scooter.id}`, {
+            //     method: 'DELETE',
+            // });
+            
+            const response = await axiosInstance.delete(`${API_URL}/${scooter.id}`);
+            
 
             if (response.ok) {
                 onUpdate(); // Refresh the table or pass any update callback

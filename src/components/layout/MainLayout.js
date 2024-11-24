@@ -8,12 +8,18 @@ import AuthService from '../services/AuthService';
 import ClipLoader from "react-spinners/ClipLoader"; // Import the spinner
 
 
-const MainLayout = () => {
+const MainLayout = ({ onLogout }) => {
   // console.log(`This user is ${user.role}`)
   const { t, switchLanguage } = useContext(LanguageContext); // Access translate function from LanguageContext
   const [isCollapsed, setIsCollapsed] = useState(false); // State for sidebar collapse
   const [subMenuOpen, setSubMenuOpen] = useState({}); // State for sub-menu toggle
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for user dropdown
+  const [loading, setLoading] = useState(true); // Add loading state
+  const [user, setUser] = useState(null); // Initialize user state
+
+  const [error, setError] = useState("");
+
+
 
   const navigate = useNavigate();
   const dropdownRef = useRef(null); // Ref for the dropdown element
@@ -47,27 +53,45 @@ const MainLayout = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  
-  
-  
-  const [user, setUser] = useState(null); // Initialize user state
-  
+
+
+
+
   useEffect(() => {
-    const currentUser = AuthService.getCurrentUser();
-    setUser(currentUser); // Set the user data from AuthService
-  }, []);
-  
-  if (!user) {
+    const fetchUser = async () => {
+      const currentUser = AuthService.getCurrentUser();
+      if (!currentUser || !currentUser.token) {
+        navigate('/login'); // Redirect if no user or token
+      } else {
+        setUser(currentUser); // Set the user
+      }
+      setLoading(false); // Stop loading
+    };
+
+    fetchUser();
+  }, [navigate]);
+
+  if (loading) {
+    // Show a spinner while loading
     return (
       <div className="loading-spinner">
-        <ClipLoader color="#3498db" loading={!user} size={90} />
+        <ClipLoader color="#3498db" loading={loading} size={90} />
       </div>
     );
   }
 
+  const handleLogout = async (e) => {
+    try {
+      AuthService.logout();
+      onLogout();
+      setError("");
+      navigate("/login"); // Navigate to the main dashboard
+    } catch (err) {
+      setError("error logging out");
+    }
+  };
   
 
-  
 
 
   return (
@@ -82,10 +106,10 @@ const MainLayout = () => {
           {user?.role === "ADMIN" && (
             <li>
               <MenuItemWithSub
-                label= {t["dashboard"]}
+                label={t["dashboard"]}
                 icon={FaIcons.FaTachometerAlt}
                 path="/dashboard"
-                subItems={[{ label: "Statistics", path: "/admin/statistics" }]}
+                subItems={[]}
                 isCollapsed={isCollapsed}
               />
             </li>
@@ -166,10 +190,6 @@ const MainLayout = () => {
             />
           </li> */}
 
-
-
-
-
           <li>
             <MenuItemWithSub
               label={t["human_resources"] || "HR"}
@@ -233,6 +253,8 @@ const MainLayout = () => {
             <div className="user-dropdown" ref={dropdownRef}>
               <Link to="/profile" className="dropdown-item">{t["my_profile"] || "My Profile"}</Link>
               <Link to="/settings" className="dropdown-item">{t["settings"] || "Settings"}</Link>
+              <button onClick={handleLogout}>Logout</button>
+
             </div>
           )}
         </header>

@@ -35,6 +35,8 @@
   padding: 15px;
   background-color: var(--control-geofence-background-color);
   width: 25%;
+  /* height: 85vh;
+  overflow-y: scroll; */
 }
 
 .geofence-list-item{

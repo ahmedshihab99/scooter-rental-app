@@ -39,7 +39,7 @@
     background-color: var(--card-container-border-color);
     padding: 20px 40px;
     border-radius: 15px;
-    max-width: 500px;
+    max-width: 700px;
     width: 90%;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
@@ -55,7 +55,6 @@
 /* Form Layout */
 .sign-up-form {
     display: flex;
-    flex-direction: column;
     gap: 30px;
 }
 
