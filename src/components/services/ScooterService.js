@@ -1,14 +1,14 @@
 import axios from "axios";
+import axiosInstance from "./axiosInstance";
 
 const baseURL = process.env.REACT_APP_API_BASE_URL;
-
-const API_URL = `${baseURL}/scooters`;
+const API_URL = `${baseURL}/admin/scooters`;
 
 
 
 const getAllScooters = async () => {
   try {
-    const response = await axios.get(API_URL);
+    const response = await axiosInstance.get(API_URL);
     return response.data;
   } catch (error) {
     console.error("Error fetching scooters:", error);
@@ -18,7 +18,7 @@ const getAllScooters = async () => {
 
 const getScooterById = async (id) => {
   try {
-    const response = await axios.get(`${API_URL}/${id}`);
+    const response = await axiosInstance.get(`${API_URL}/${id}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching scooter with ID ${id}:`, error);
@@ -28,7 +28,7 @@ const getScooterById = async (id) => {
 
 const updateScooterStatus = async (id, status) => {
   try {
-    const response = await axios.put(`${API_URL}/${id}`, { status });
+    const response = await axiosInstance.put(`${API_URL}/${id}`, { status });
     return response.data;
   } catch (error) {
     console.error(`Error updating scooter status with ID ${id}:`, error);
@@ -39,7 +39,7 @@ const updateScooterStatus = async (id, status) => {
 // Add this function to fetch scooter statistics
 const getScooterStatistics = async () => {
   try {
-    const response = await axios.get(`${API_URL}/statistics`);
+    const response = await axiosInstance.get(`${API_URL}/statistics`);
     return response.data;
   } catch (error) {
     console.error("Error fetching scooter statistics:", error);

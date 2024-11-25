@@ -151,9 +151,6 @@ const ScooterPage = () => {
     };
 
 
-
-
-
     // Automatically update filters when filter state changes
     useEffect(() => {
         const debounceTimeout = setTimeout(() => {

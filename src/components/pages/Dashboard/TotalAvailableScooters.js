@@ -18,7 +18,7 @@ const TotalAvailableScooters = () => {
 
     // Fetch location options and populate dropdown dynamically
     useEffect(() => {
-        axios.get(`${baseURL}/available_scooters`)
+        axios.get(`${baseURL}/scooters`)
             .then(response => {
                 const locationSet = new Set(response.data.map(scooter => scooter.location));
                 const locationOptions = Array.from(locationSet).map(location => ({

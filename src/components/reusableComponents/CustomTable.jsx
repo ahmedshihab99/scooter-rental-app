@@ -66,7 +66,7 @@ const CustomTable = forwardRef(({ columns, apiEndpoint, filters, sumFields = nul
 
     const updateTable = () => {
         // Re-fetch or update table data
-        axios.get(apiEndpoint)
+        axiosInstance.get(apiEndpoint)
             .then(response => {
                 setData(response.data);
                 setFilteredData(response.data);

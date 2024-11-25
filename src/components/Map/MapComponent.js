@@ -112,8 +112,11 @@ const isInsideGeofence = (lat, lng) => {
 };
 
 
-  return (
-    <MapContainer center={[51.505, -0.09]} zoom={13} style={{ height: "100vh", width: "100%" }}>
+ 
+
+
+  return ( //The center makes a default user position
+    <MapContainer center={[30.0444, 31.2357]} zoom={13} style={{ height: "100vh", width: "100%" }}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution="&copy; OpenStreetMap contributors"

@@ -98,7 +98,7 @@
     
 }
 
-.scooter-page [type="date"], .scooter-page input[type="number"], .scooter-page select {
+.scooter-page [type="date"], .scooter-page [type="number"], .scooter-page select {
     width: 100%;
     padding: 10px;
     margin: 3px 0;
@@ -200,8 +200,8 @@
 }
 
 
-.modal-content [type="date"], .modal-content [type="text"], .modal-content select {
-    width: 100%;
+.modal-content [type="date"], .modal-content [type="text"], .modal-content [type="number"], .modal-content select {
+    width: 100%; 
     padding: 10px;
     margin: 3px 0;
     border: 1px solid var(--modal-input-border-color);
